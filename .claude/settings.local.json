@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(npm run build)",
+      "Bash(cat:*)",
+      "Bash(python:*)",
+      "Skill(surf)",
+      "Bash(echo:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: Claude-Surf plugin for VibeSurf integration\n\nAdd complete plugin structure including:\n- Plugin configuration and metadata\n- Surf skill with VibeSurf client integration\n- Health check hook for session start\n- Documentation \\(README, CLAUDE.md, CHANGELOG.md\\)\n- Build configuration and scripts\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}

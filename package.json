@@ -1,0 +1,19 @@
+{
+  "name": "claude-surf",
+  "version": "1.0.0",
+  "description": "VibeSurf integration for Claude Code",
+  "type": "module",
+  "scripts": {
+    "build": "cd skills/surf && npm run build",
+    "dev": "cd skills/surf && npm run dev",
+    "install-deps": "cd skills/surf && npm install"
+  },
+  "keywords": [
+    "claude-code",
+    "plugin",
+    "vibesurf",
+    "browser-automation"
+  ],
+  "author": "VibeSurf Community",
+  "license": "MIT"
+}

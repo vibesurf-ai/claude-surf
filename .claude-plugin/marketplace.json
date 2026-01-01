@@ -1,0 +1,30 @@
+{
+  "name": "claude-surf",
+  "owner": {
+    "name": "VibeSurf Community"
+  },
+  "plugins": [
+    {
+      "name": "claude-surf",
+      "source": "./",
+      "description": "VibeSurf integration for browser automation, AI skills, workflows, and app integrations",
+      "strict": false,
+      "keywords": [
+        "browser",
+        "automation",
+        "vibesurf",
+        "workflow",
+        "composio",
+        "mcp",
+        "ai-skills",
+        "web-automation"
+      ],
+      "skills": ["./skills/surf"]
+    }
+  ],
+  "metadata": {
+    "description": "Marketplace for the claude-surf plugin - VibeSurf integration",
+    "version": "1.0.0",
+    "homepage": "https://github.com/vibesurf-ai/claude-surf"
+  }
+}

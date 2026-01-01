@@ -1,0 +1,16 @@
+{
+  "description": "Claude-surf VibeSurf integration hooks",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/vibesurf-health-check.js\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
