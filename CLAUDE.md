@@ -4,232 +4,292 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Claude-Surf is a Claude Code plugin that integrates with VibeSurf, exposing VibeSurf's browser automation, AI skills, workflows, and external app integrations (Composio/MCP) through a `/surf` command interface.
+Claude-Surf is a Claude Code plugin that integrates with VibeSurf, exposing browser automation, AI skills, workflows, and external app integrations through a **pure markdown skill system**.
 
 **Key Dependency**: VibeSurf server must be running on `http://127.0.0.1:9335` for this plugin to function.
 
-## Development Commands
-
-```bash
-# Install dependencies
-cd skills/surf
-npm install
-
-# Build TypeScript
-npm run build
-
-# Watch mode for development
-npm run dev
-
-# Test command execution locally
-npm run surf                    # Lists all actions
-npm run surf surf:navigate      # Execute specific action
-```
-
 ## Architecture
 
-### Three-Layer Design
+### Superpowers-Inspired Design
 
-1. **HTTP Client Layer** (`skills/surf/client/`)
-   - `vibesurf-client.ts`: Communicates with VibeSurf's HTTP API
-   - `types.ts`: TypeScript definitions for API contracts
-   - Handles retry logic, timeouts, error types, action categorization
+This plugin follows the **superpowers** architecture pattern:
 
-2. **Command Layer** (`skills/surf/commands/`)
-   - `surf.ts`: Entry point for `/surf` and `/surf:{action_name}` commands
-   - `utils.ts`: Parameter prompting, formatting, validation
-   - Bridges user input with client API calls
+- **No build system** - Pure markdown skills, no compilation
+- **Hook-based injection** - SessionStart injects skill content
+- **Frontmatter-driven** - `description` field defines triggers
+- **Direct API access** - Claude calls VibeSurf HTTP API directly
 
-3. **VibeSurf API** (External)
-   - `GET /health` - Server health check
-   - `GET /api/tool/search?keyword={keyword}` - Action discovery
-   - `GET /api/tool/{action_name}/params` - Get JSON schema for action
-   - `POST /api/tool/execute` - Execute action with params
+### Project Structure
 
-### Action Categorization
+```
+claude-surf/
+├── .claude-plugin/
+│   ├── plugin.json          # Plugin metadata
+│   └── marketplace.json     # Marketplace configuration
+├── hooks/
+│   ├── hooks.json           # Hook configuration
+│   ├── session-start.sh     # Health check + skill injection
+│   └── run-hook.cmd         # Cross-platform wrapper
+├── skills/
+│   ├── surf/                # Main entry skill (auto-injected)
+│   ├── search/              # AI web search
+│   ├── js_code/             # Structured data extraction
+│   ├── crawl/               # Page content extraction
+│   ├── summary/             # Page summarization
+│   ├── finance/             # Stock data
+│   ├── trend/               # Trending news
+│   ├── screenshot/          # Screenshots
+│   ├── browser/             # Direct browser control (21 actions)
+│   ├── browser-use/         # AI multi-step automation
+│   ├── website-api/         # Platform APIs (XiaoHongShu/etc)
+│   ├── workflows/           # Pre-built workflows
+│   └── integrations/        # External apps (Gmail/GitHub/etc)
+├── README.md
+└── CLAUDE.md
+```
 
-Actions are auto-categorized in `vibesurf-client.ts:categorizeAction()`:
+## Skill System
 
-- **Browser Control**: Actions containing browser/navigate/click/input/scroll
-- **AI Skills**: Actions starting with `skill_`
-- **Workflows**: Actions containing `workflow`
-- **Extra Tools**: Actions starting with `cpo.`/`mcp.` or containing `toolkit`
-- **Other**: Everything else (including `execute_browser_use_agent`)
+### Auto-Injected Skill
 
-This categorization powers the `/surf` command's organized action list.
+**`surf`** - Main entry point, automatically injected via SessionStart hook
+- Provides navigation to all other skills
+- Contains VibeSurf API documentation
+- No manual invocation needed
 
-### Natural Language Parameter Support
+### On-Demand Skills
 
-The plugin supports both interactive and natural language parameter input:
+All other 12 skills are loaded via the **Skill tool** when needed:
+- `search` - AI web search
+- `js_code` - Extract structured data with auto-generated JS
+- `crawl` - Extract page content
+- `summary` - Summarize webpages
+- `finance` - Stock data from Yahoo Finance
+- `trend` - Trending news
+- `screenshot` - Page screenshots
+- `browser` - Direct browser control
+- `browser-use` - AI multi-step automation
+- `website-api` - Social platform APIs
+- `workflows` - Pre-built automations
+- `integrations` - Gmail/GitHub/Slack/etc
 
-**Interactive**: `/surf:navigate` → prompts for URL
-**Natural Language**: `/surf:navigate 谷歌首页` → Claude converts "谷歌首页" to `{url: "https://www.google.com"}`
+### Skill Frontmatter
 
-Implementation in `surf.ts:executeAction()`:
-1. Parse command to extract action name and trailing text
-2. Fetch parameter schema from VibeSurf API
-3. If natural language detected: display schema + hint for Claude to convert
-4. If not: run interactive prompts via `utils.ts:promptForParameters()`
+Each `SKILL.md` file has YAML frontmatter:
+
+```yaml
+---
+name: skill-name
+description: Use when [triggering conditions and symptoms]
+---
+```
+
+**Critical**: The `description` field determines when Claude loads the skill. It should:
+- Start with "Use when..."
+- Describe triggering conditions, NOT workflow
+- Include specific symptoms and examples
+
+## VibeSurf API
+
+VibeSurf exposes three core HTTP endpoints at `http://127.0.0.1:9335`:
+
+### 1. List Available Actions
+```bash
+GET /api/tool/search?keyword={optional_keyword}
+```
+Returns all available VibeSurf actions.
+
+### 2. Get Action Parameters
+```bash
+GET /api/tool/{action_name}/params
+```
+Returns JSON schema for the action's parameters.
+
+### 3. Execute Action
+```bash
+POST /api/tool/execute
+Content-Type: application/json
+
+{
+  "action_name": "action_name_here",
+  "parameters": {
+    // action-specific parameters
+  }
+}
+```
+
+### Standard Workflow
+
+1. **Discover actions** → `GET /api/tool/search`
+2. **Get parameters** → `GET /api/tool/{action_name}/params`
+3. **Execute** → `POST /api/tool/execute`
 
 ## Plugin Configuration
 
 ### Claude Code Plugin Structure
 
-```
-.claude-plugin/
-├── marketplace.json    # Marketplace metadata (owner, version, keywords)
-├── plugin.json         # Plugin metadata (name, description, license)
-└── hooks.json          # SessionStart hook for VibeSurf health check
-
-scripts/
-└── vibesurf-health-check.js  # Health check on session start
-
-skills/surf/
-└── SKILL.md           # Skill definition with frontmatter
+**`.claude-plugin/plugin.json`** - Plugin metadata
+```json
+{
+  "name": "surf",
+  "description": "VibeSurf integration - Control browsers, automate workflows...",
+  "version": "1.0.0"
+}
 ```
 
-**Critical**: `SKILL.md` frontmatter's `description` field determines when Claude auto-invokes this skill. It includes trigger phrases like "browse", "automate", "search for", etc.
+**`.claude-plugin/marketplace.json`** - Marketplace configuration
+```json
+{
+  "name": "claude-surf",
+  "plugins": [{
+    "name": "surf",
+    "source": "./"
+  }]
+}
+```
 
-### Skill Invocation Flow
-
-1. **Session Start**: Hook checks VibeSurf health at `http://127.0.0.1:9335/health`
-   - If not running: Displays warning with installation instructions
-   - If running: Silent (plugin ready to use)
-2. User types browser/automation-related request
-3. Claude Code matches against `SKILL.md` description
-4. Skill loads, making VibeSurf client available
-5. Claude can now call `/surf` commands or auto-select appropriate actions
+**`hooks/hooks.json`** - SessionStart hook configuration
+```json
+{
+  "hooks": {
+    "SessionStart": [{
+      "matcher": "startup|resume|clear|compact",
+      "hooks": [{
+        "type": "command",
+        "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/run-hook.cmd\" session-start.sh"
+      }]
+    }]
+  }
+}
+```
 
 ### Health Check Hook
 
-The `SessionStart` hook (`hooks.json`) runs `vibesurf-health-check.js`:
-- 3-second timeout for health check
-- Non-blocking: doesn't prevent session start if VibeSurf is down
-- Provides immediate feedback to user about VibeSurf status
+**`hooks/session-start.sh`** - Runs on session start:
+1. Checks if VibeSurf is running (`curl http://127.0.0.1:9335/health`)
+2. If running: Injects `surf` skill content to context
+3. If not running: Displays warning with installation instructions
 
-## Key Design Patterns
+**Non-blocking**: Hook timeout is 3 seconds, won't prevent session start.
 
-### Error Handling Hierarchy
+## Skill Reference
 
-Custom error types in `types.ts`:
-- `ServerNotRunningError`: VibeSurf not reachable → tell user to install/start
-- `ActionNotFoundError`: Invalid action name → suggest `/surf` to list
-- `ParameterValidationError`: Schema mismatch
-- `ExecutionError`: Action failed → display VibeSurf's error message
+### AI Skills (7)
 
-All handled in `surf.ts:main()` with specific user guidance.
+| Skill | Action | Purpose |
+|-------|--------|---------|
+| `search` | `skill_search` | AI-powered web search (Gemini) |
+| `js_code` | `skill_code` | Auto-generate JS to extract lists/tables |
+| `crawl` | `skill_crawl` | Extract page content with LLM |
+| `summary` | `skill_summary` | Summarize webpage |
+| `finance` | `skill_finance` | Stock data from Yahoo Finance |
+| `trend` | `skill_trend` | Trending news from NewsNow |
+| `screenshot` | `skill_screenshot` | Take screenshots |
 
-### Parameter Schema Processing
+### Browser Skills (2)
 
-VibeSurf returns JSON Schema for action params. The plugin:
-1. Parses `required` vs optional fields
-2. Prompts for required params first
-3. Applies type coercion (string→number, string→boolean, CSV→array)
-4. Validates enum values if present
-5. Supports default values from schema
+| Skill | Actions | Purpose |
+|-------|---------|---------|
+| `browser` | 21 actions (browser.*) | Direct control (navigate, click, input, etc.) |
+| `browser-use` | `execute_browser_use_agent` | AI multi-step automation |
 
-See `utils.ts:promptForParameter()` for type conversion logic.
+### Integration Skills (3)
 
-### Action Result Formatting
-
-VibeSurf returns:
-```typescript
-{
-  success: boolean,
-  result?: any,
-  extracted_content?: string,
-  long_term_memory?: string,
-  attachments?: string[]
-}
-```
-
-Client formats this in `vibesurf-client.ts:formatActionResult()` with markdown:
-- Status emoji (✅/❌)
-- Extracted content
-- Summary (long_term_memory)
-- File attachments list
+| Skill | Actions | Purpose |
+|-------|---------|---------|
+| `website-api` | 2 actions | XiaoHongShu, Weibo, Zhihu, Douyin, YouTube |
+| `workflows` | 2 actions | Pre-built automation sequences |
+| `integrations` | 4 actions | Gmail, GitHub, Slack, 100+ apps |
 
 ## Important VibeSurf Actions
 
-### Browser-Use Agent (Parallel Automation)
-`execute_browser_use_agent` - Most powerful action for complex tasks
-- Launches autonomous AI agents that complete multi-step workflows
-- Supports parallel execution (multiple agents on different tabs)
+### Browser-Use Agent (Most Powerful)
+
+**Action**: `execute_browser_use_agent`
+
+Launches autonomous AI agents for multi-step tasks:
+- Supports parallel execution (unique tab_id per agent)
 - Task-oriented: describe goal, agent figures out steps
+- Use for: Form filling, multi-site research, complex extraction
 
-**When to use**:
-- Any task with >2 steps
-- Multi-tab workflows
-- Parallel independent tasks (e.g., research across 3 websites)
+**When to use**: Any task with >2 steps or multiple tabs
 
-**Parameters**:
-```json
-{
-  "tasks": [
-    {"task": "description", "tab_id": "optional"}
-  ]
-}
-```
+### Browser Actions
 
-### Skill Actions
-- `skill_code`: Auto-generates JS to extract structured data (lists, tables)
-- `skill_crawl`: LLM-powered single-page data extraction
-- `skill_search`: AI search with ranked results
+All `browser.*` actions for direct control:
+- `browser.navigate` - Go to URL
+- `browser.click` - Click element
+- `browser.input` - Type text
+- `browser.switch` - Switch tabs
+- `browser.extract` - LLM data extraction
+- `browser.screenshot` - Take screenshot
+- And 15 more...
 
-### Extra Tools
-- `search_extra_tool`: Find Composio/MCP tools
-- `get_extra_tool_info`: Get tool schema
-- `execute_extra_tool`: Run external app actions (Gmail, GitHub, etc.)
+### Extra Tools (Composio/MCP)
+
+- `get_all_toolkit_types` - List available apps
+- `search_tool` - Find tools in toolkit
+- `get_tool_info` - Get tool schema
+- `execute_extra_tool` - Run app action
 
 ## Testing the Plugin
 
 ### Local Testing Workflow
 
-1. Ensure VibeSurf is running: `vibesurf`
-2. Build plugin: `cd skills/surf && npm run build`
-3. Install locally in Claude Code: `/plugin add /path/to/claude-surf`
-4. Restart Claude Code
-5. Test health check: `/surf` (should list actions)
-6. Test action execution: `/surf:get_browser_state`
-7. Test natural language: `/surf:navigate 谷歌首页`
+1. **Start VibeSurf**: `vibesurf`
+2. **Install plugin**: `/plugin install ./` (from project root)
+3. **Restart Claude Code**
+4. **Test**: Ask Claude to search web, navigate browser, etc.
 
 ### Verifying VibeSurf Connection
 
-If actions fail, check:
-1. VibeSurf server running: `curl http://127.0.0.1:9335/health`
-2. Actions available: `curl http://127.0.0.1:9335/api/tool/search`
-3. Check client logs in `vibesurf-client.ts:isServerRunning()`
+```bash
+# Check if VibeSurf is running
+curl http://127.0.0.1:9335/health
 
-## Code Modification Guidelines
+# List all available actions
+curl http://127.0.0.1:9335/api/tool/search
 
-### Adding New Action Categories
-
-Edit `vibesurf-client.ts`:
-1. Add to `ActionCategory` enum in `types.ts`
-2. Update `CategorizedActions` interface
-3. Add logic in `categorizeAction()` method
-4. Update `getCategorizedActions()` initialization
-
-### Modifying Parameter Prompts
-
-Parameter collection in `utils.ts:promptForParameter()`:
-- Uses `readline` for interactive input
-- Type conversion happens here (number, boolean, array, object)
-- Respect `schema.default` for optional params
-- Natural language hints passed through but not auto-converted (Claude does that)
-
-### Updating VibeSurf API Calls
-
-All API calls in `vibesurf-client.ts`:
-- Use `fetchWithRetry()` for resilience (3 retries, exponential backoff)
-- 120s timeout for normal operations, 5s for health checks
-- Always check `response.ok` before parsing JSON
-- Throw typed errors (`ServerNotRunningError`, etc.) for proper handling
+# Get parameters for specific action
+curl http://127.0.0.1:9335/api/tool/skill_search/params
+```
 
 ## Documentation Sync
 
 When modifying functionality:
-1. Update `SKILL.md` - affects Claude's auto-invocation behavior
+1. Update relevant `skills/*/SKILL.md` - affects Claude's behavior
 2. Update `README.md` - user-facing documentation
-3. Update examples in both if adding new actions/patterns
-4. Keep action categories consistent across all docs
+3. Keep skill descriptions consistent with actual VibeSurf API
+4. Test with Claude Code to verify skill loading
+
+## Key Design Patterns
+
+### Error Handling
+
+VibeSurf returns structured responses:
+```json
+{
+  "success": boolean,
+  "result": any,
+  "extracted_content": string,
+  "long_term_memory": string,
+  "attachments": string[]
+}
+```
+
+Handle errors by checking `success` field and `result` for error messages.
+
+### Action Discovery Pattern
+
+Before executing unknown actions:
+1. Search for action: `GET /api/tool/search?keyword=...`
+2. Get parameters: `GET /api/tool/{action}/params`
+3. Build request: `POST /api/tool/execute`
+
+### Skill Decision Making
+
+When user makes a browser/automation request:
+1. Consult `surf` skill (already in context)
+2. `surf` skill points to appropriate specialized skill
+3. Use Skill tool to load that skill
+4. Follow skill's guidance to call VibeSurf API

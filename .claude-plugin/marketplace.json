@@ -1,18 +1,18 @@
 {
-  "name": "claude-surf",
+  "name": "claude-surf-marketplace",
+  "description": "VibeSurf integration plugin marketplace for Claude Code",
   "owner": {
-    "name": "VibeSurf Community"
-  },
-  "metadata": {
-    "description": "Claude-Surf plugin - VibeSurf integration for browser automation",
-    "homepage": "https://github.com/vibesurf-ai/claude-surf"
+    "name": "vibesurf-ai"
   },
   "plugins": [
     {
       "name": "claude-surf",
+      "description": "VibeSurf integration - Control browsers, automate workflows, execute AI skills (search/crawl/js_code/summary), use Composio integrations (Gmail/GitHub/Slack), and run pre-built workflows",
       "version": "1.0.0",
-      "source": "./plugin",
-      "description": "VibeSurf integration for browser automation, AI skills, workflows, and app integrations (Composio/MCP). Control real browsers, execute AI-powered tasks, and automate web workflows."
+      "source": "./",
+      "author": {
+        "name": "VibeSurf Community"
+      }
     }
   ]
 }

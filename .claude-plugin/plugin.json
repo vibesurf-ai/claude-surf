@@ -1,20 +1,12 @@
 {
   "name": "claude-surf",
+  "description": "VibeSurf integration - Control browsers, automate workflows, execute AI skills (search/crawl/js_code/summary), use Composio integrations (Gmail/GitHub/Slack), and run pre-built workflows",
   "version": "1.0.0",
-  "description": "VibeSurf integration for browser automation, AI skills, workflows, and app integrations (Composio/MCP). Control real browsers, execute AI-powered tasks, and automate web workflows.",
-  "license": "MIT",
   "author": {
     "name": "VibeSurf Community"
   },
   "homepage": "https://github.com/vibesurf-ai/claude-surf",
   "repository": "https://github.com/vibesurf-ai/claude-surf",
-  "keywords": [
-    "browser-automation",
-    "vibesurf",
-    "ai-skills",
-    "web-automation",
-    "composio",
-    "mcp",
-    "workflows"
-  ]
+  "license": "MIT",
+  "keywords": ["browser", "automation", "vibesurf", "workflows", "ai", "web", "surf"]
 }
