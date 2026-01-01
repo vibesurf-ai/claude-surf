@@ -59,12 +59,13 @@ git clone https://github.com/vibesurf-ai/claude-surf
 cd claude-surf
 
 # 2. Install dependencies and build TypeScript
-cd plugin/skills/surf
-npm install
+npm run install-deps
 npm run build
-cd ../../..
 
-# 3. Install plugin in Claude Code
+# 3. IMPORTANT: Clean node_modules from plugin directory
+npm run clean
+
+# 4. Install plugin in Claude Code
 /plugin install ./
 ```
 
@@ -76,20 +77,24 @@ git clone https://github.com/vibesurf-ai/claude-surf
 cd claude-surf
 
 # 2. Install dependencies and build
-cd plugin/skills/surf
-npm install
+npm run install-deps
 npm run build
-cd ../../..
 
-# 3. Add marketplace and install plugin
+# 3. IMPORTANT: Clean node_modules from plugin directory
+npm run clean
+
+# 4. Add marketplace and install plugin
 /plugin marketplace add ./
 /plugin install claude-surf
 ```
 
+**⚠️ IMPORTANT**: After building, you MUST run `npm run clean` to remove `node_modules` from the `plugin/` directory. If `node_modules` exists in `plugin/skills/surf/`, the plugin installation will fail with `EXDEV: cross-device link not permitted` error.
+
 **Installation Steps**:
-1. **Build the plugin**: Run `npm install` and `npm run build` in `plugin/skills/surf/`
-2. **Install plugin**: Use `/plugin install ./` from the project root directory
-3. **Restart Claude Code**: Restart to ensure the plugin loads correctly
+1. **Build the plugin**: Run `npm run install-deps` and `npm run build` from project root
+2. **Clean artifacts**: Run `npm run clean` to remove `node_modules` from `plugin/` directory
+3. **Install plugin**: Use `/plugin install ./` from the project root directory
+4. **Restart Claude Code**: Restart to ensure the plugin loads correctly
 
 **Verification**:
 ```bash
@@ -100,7 +105,7 @@ cd ../../..
 /surf
 ```
 
-**Note**: The plugin uses a `plugin/` subdirectory structure to avoid including `node_modules` during installation, which prevents cross-device link errors on Windows.
+**Note**: The plugin uses a `plugin/` subdirectory structure to avoid including `node_modules` during installation, which prevents cross-device link errors on Windows. Always run `npm run clean` after building to ensure `plugin/skills/surf/node_modules` is removed.
 
 ## Usage
 

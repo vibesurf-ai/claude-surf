@@ -21,7 +21,9 @@
       "Bash(git commit -m \"$\\(cat <<''EOF''\nBuild: Add compiled JavaScript files for plugin distribution\n\n- Build TypeScript to JavaScript in skills/surf/dist/\n- Update .gitignore to include compiled files \\(dist/*.js\\)\n- Exclude node_modules from plugin distribution\n\nThis follows the pattern used by claude-mem: commit compiled code,\nnot node_modules. The plugin runs the compiled JS directly without\nneeding build tools installed.\n\nDevelopment workflow:\n1. Make changes to .ts files\n2. Run: npm run build \\(from root\\) or cd skills/surf && npm run build\n3. Commit both .ts sources and compiled .js files\n4. Delete node_modules before plugin installation testing\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(dir:*)",
       "Bash(test:*)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix: Resolve plugin installation EXDEV error\n\nRestructure plugin to fix cross-device link error:\n- Move all plugin code to plugin/ subdirectory\n- Update marketplace.json source to ./plugin \\(from ./\\)\n- Add plugin.json in plugin/.claude-plugin/\n- Update .gitignore to exclude development artifacts\n\nThis aligns with working plugin structures \\(claude-mem\\).\nThe EXDEV error was caused by marketplace.json source:\"./\"\nwhich attempted to copy the entire root directory including\nnode_modules during plugin installation.\n\nNew structure:\n- .claude-plugin/marketplace.json \\(metadata only\\)\n- plugin/.claude-plugin/plugin.json \\(plugin config\\)\n- plugin/hooks/ \\(hooks directory\\)\n- plugin/scripts/ \\(scripts directory\\)\n- plugin/skills/ \\(skill code and dist\\)\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)"
     ]
   }
 }

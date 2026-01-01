@@ -4,9 +4,10 @@
   "description": "VibeSurf integration for Claude Code",
   "type": "module",
   "scripts": {
-    "build": "cd skills/surf && npm run build",
-    "dev": "cd skills/surf && npm run dev",
-    "install-deps": "cd skills/surf && npm install"
+    "install-deps": "cd plugin/skills/surf && npm install",
+    "build": "cd plugin/skills/surf && npm run build",
+    "dev": "cd plugin/skills/surf && npm run dev",
+    "clean": "rm -rf plugin/skills/surf/node_modules plugin/skills/surf/package-lock.json"
   },
   "keywords": [
     "claude-code",
