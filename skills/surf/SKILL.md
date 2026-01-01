@@ -37,7 +37,7 @@ Content-Type: application/json
 
 {
   "action_name": "action_name_here",
-  "action_params": {
+  "parameters": {
     // action-specific parameters
   }
 }
@@ -47,6 +47,18 @@ Content-Type: application/json
 1. Search for action → Get action name
 2. Get params schema → See required/optional parameters
 3. Execute → Call with parameters
+
+> **⚠️ CRITICAL: Parameter Error Handling**
+>
+> **ALWAYS** call `GET /api/tool/{action_name}/params` before executing ANY action if you are unsure about parameters.
+>
+> **When you encounter a parameter error:**
+> 1. **STOP** - Do not guess or make up parameters
+> 2. **CALL** `GET /api/tool/{action_name}/params` to get the exact schema
+> 3. **READ** the response to identify required vs optional parameters
+> 4. **RETRY** with correct parameters
+>
+> Never blindly retry with incorrect parameters. Always fetch the schema first!
 
 ## Which Skill to Use
 

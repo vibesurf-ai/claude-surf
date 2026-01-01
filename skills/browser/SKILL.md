@@ -17,7 +17,6 @@ Direct control of browser interactions. Use for simple, single actions.
 - Click/input/scroll
 - Switch/close tabs
 - Get page state
-- Take screenshot
 - Extract visible data
 
 ## Available Actions
@@ -37,7 +36,6 @@ Direct control of browser interactions. Use for simple, single actions.
 | `browser.scroll` | Scroll page |
 | `browser.send_keys` | Send keyboard keys |
 | `browser.find_text` | Scroll to and find text |
-| `browser.screenshot` | Get screenshot of current viewport |
 | `browser.dropdown_options` | Get dropdown options |
 | `browser.select_dropdown` | Select dropdown option |
 | `browser.evaluate` | Execute JavaScript in browser |
