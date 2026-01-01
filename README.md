@@ -51,27 +51,45 @@ VibeSurf must be running on `http://127.0.0.1:9335` for Claude-Surf to work.
 
 ### Option 2: Local Installation
 
+#### Quick Install (From Local Directory)
+
+```bash
+# 1. Clone repository
+git clone https://github.com/vibesurf-ai/claude-surf
+cd claude-surf
+
+# 2. Install dependencies and build TypeScript
+cd plugin/skills/surf
+npm install
+npm run build
+cd ../../..
+
+# 3. Install plugin in Claude Code
+/plugin install ./
+```
+
+#### Manual Install (For Development)
+
 ```bash
 # 1. Clone repository
 git clone https://github.com/vibesurf-ai/claude-surf
 cd claude-surf
 
 # 2. Install dependencies and build
-cd skills/surf
+cd plugin/skills/surf
 npm install
 npm run build
-cd ../..
+cd ../../..
 
-# 3. Add marketplace and install plugin (in Claude Code)
+# 3. Add marketplace and install plugin
 /plugin marketplace add ./
 /plugin install claude-surf
 ```
 
 **Installation Steps**:
-1. **Build the plugin**: Run `npm install` and `npm run build` in `skills/surf/`
-2. **Add marketplace**: Use `/plugin marketplace add ./` from the project root directory
-3. **Install plugin**: Use `/plugin install claude-surf` to install from the local marketplace
-4. **Restart Claude Code**: Restart to ensure the plugin loads correctly
+1. **Build the plugin**: Run `npm install` and `npm run build` in `plugin/skills/surf/`
+2. **Install plugin**: Use `/plugin install ./` from the project root directory
+3. **Restart Claude Code**: Restart to ensure the plugin loads correctly
 
 **Verification**:
 ```bash
@@ -81,6 +99,8 @@ cd ../..
 # Test the surf command
 /surf
 ```
+
+**Note**: The plugin uses a `plugin/` subdirectory structure to avoid including `node_modules` during installation, which prevents cross-device link errors on Windows.
 
 ## Usage
 
@@ -356,6 +376,16 @@ vibesurf  # Start VibeSurf server
 
 **Solution**: Increase timeout in client options or check network
 
+### Plugin Installation Fails
+
+**Error**: "EXDEV: cross-device link not permitted"
+
+**Solution**: This is fixed in the current version. Ensure you're using the updated `plugin/` subdirectory structure:
+```bash
+cd claude-surf
+/plugin install ./
+```
+
 ## Configuration
 
 ### Default Settings
@@ -371,14 +401,14 @@ vibesurf  # Start VibeSurf server
 
 ### Custom Configuration
 
-Modify `skills/surf/client/vibesurf-client.ts` to customize settings.
+Modify `plugin/skills/surf/client/vibesurf-client.ts` to customize settings.
 
 ## Development
 
 ### Setup
 
 ```bash
-cd skills/surf
+cd plugin/skills/surf
 npm install
 npm run build
 ```
@@ -393,25 +423,60 @@ npm run surf
 npm run surf surf:get_browser_state
 ```
 
+### Watch Mode
+
+```bash
+npm run dev  # Auto-rebuild on file changes
+```
+
 ### Project Structure
 
 ```
 claude-surf/
-├── .claude-plugin/           # Plugin metadata
-│   ├── marketplace.json
-│   └── plugin.json
-├── skills/surf/              # Main skill
-│   ├── SKILL.md             # Skill definition
-│   ├── client/              # VibeSurf client
-│   │   ├── types.ts
-│   │   └── vibesurf-client.ts
-│   ├── commands/            # Command handlers
-│   │   ├── surf.ts
-│   │   └── utils.ts
-│   ├── package.json
-│   └── tsconfig.json
-└── README.md
+├── .claude-plugin/           # Plugin marketplace metadata
+│   └── marketplace.json      # Points to plugin/ subdirectory
+├── plugin/                   # Actual plugin code (installed by Claude)
+│   ├── .claude-plugin/
+│   │   ├── plugin.json       # Plugin metadata
+│   │   └── hooks.json        # Hook configurations
+│   ├── hooks/
+│   │   └── hooks.json        # Hook definitions
+│   ├── scripts/
+│   │   └── vibesurf-health-check.js
+│   ├── skills/
+│   │   └── surf/             # Main skill
+│   │       ├── SKILL.md      # Skill definition for Claude
+│   │       ├── client/       # VibeSurf HTTP client
+│   │       │   ├── types.ts
+│   │       │   └── vibesurf-client.ts
+│   │       ├── commands/     # Command handlers
+│   │       │   ├── surf.ts
+│   │       │   └── utils.ts
+│   │       ├── dist/         # Compiled JavaScript (runtime)
+│   │       ├── package.json
+│   │       └── tsconfig.json
+│   ├── README.md
+│   ├── CHANGELOG.md
+│   └── LICENSE
+├── node_modules/             # Development dependencies (not installed)
+├── package.json              # Root package.json for development
+├── CLAUDE.md                 # Project documentation
+└── .gitignore
 ```
+
+**Why the `plugin/` subdirectory?**
+The `plugin/` subdirectory structure separates development artifacts (like `node_modules`) from the plugin code that gets installed. This prevents installation errors on Windows where cross-device links fail when copying large directories.
+
+### Rebuilding After Changes
+
+After modifying TypeScript files in `plugin/skills/surf/`:
+
+```bash
+cd plugin/skills/surf
+npm run build
+```
+
+Then restart Claude Code to load the updated plugin.
 
 ## Contributing
 
@@ -420,7 +485,8 @@ Contributions are welcome! Please:
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Submit a pull request
+4. Rebuild TypeScript: `cd plugin/skills/surf && npm run build`
+5. Submit a pull request
 
 ## License
 
