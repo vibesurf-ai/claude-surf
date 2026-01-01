@@ -16,5 +16,7 @@
     "composio",
     "mcp",
     "workflows"
-  ]
+  ],
+  "skills": ["./skills/surf"],
+  "hooks": ["./hooks.json"]
 }

@@ -6,20 +6,7 @@
   "plugins": [
     {
       "name": "claude-surf",
-      "source": "./",
-      "description": "VibeSurf integration for browser automation, AI skills, workflows, and app integrations",
-      "strict": false,
-      "keywords": [
-        "browser",
-        "automation",
-        "vibesurf",
-        "workflow",
-        "composio",
-        "mcp",
-        "ai-skills",
-        "web-automation"
-      ],
-      "skills": ["./skills/surf"]
+      "source": "./"
     }
   ],
   "metadata": {
