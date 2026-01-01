@@ -53,8 +53,9 @@ VibeSurf must be running on `http://127.0.0.1:9335` for Claude-Surf to work.
 git clone https://github.com/vibesurf-ai/claude-surf
 cd claude-surf
 
-# Install plugin in Claude Code
-/plugin install ./
+# Add to marketplace and install
+/plugin marketplace add ./
+/plugin install claude-surf
 ```
 
 **Restart Claude Code** to load the plugin.
