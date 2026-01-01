@@ -6,16 +6,20 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Build outputs
+# Build outputs (except plugin/skills/surf/dist which is needed for runtime)
 dist/
-!skills/surf/dist/
+!plugin/skills/surf/dist/
 build/
-*.js
+
+# TypeScript - keep compiled JS, ignore source maps and declarations
 *.d.ts
-!vitest.config.ts
-!*.config.js
-!scripts/*.js
-!skills/surf/dist/**/*.js
+*.d.ts.map
+*.js.map
+!plugin/skills/surf/dist/**/*.js
+
+# Keep dist JS files needed for plugin runtime
+!plugin/skills/surf/dist/client/*.js
+!plugin/skills/surf/dist/commands/*.js
 
 # IDE
 .vscode/
@@ -36,8 +40,12 @@ coverage/
 tmp/
 temp/
 *.tmp
+*.temp
 
 # Environment variables
 .env
 .env.local
 .env.*.local
+
+# Claude settings
+.claude/settings.local.json

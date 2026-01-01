@@ -11,7 +11,17 @@
       "Bash(echo:*)",
       "Bash(git config:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: Claude-Surf plugin for VibeSurf integration\n\nAdd complete plugin structure including:\n- Plugin configuration and metadata\n- Surf skill with VibeSurf client integration\n- Health check hook for session start\n- Documentation \\(README, CLAUDE.md, CHANGELOG.md\\)\n- Build configuration and scripts\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: Claude-Surf plugin for VibeSurf integration\n\nAdd complete plugin structure including:\n- Plugin configuration and metadata\n- Surf skill with VibeSurf client integration\n- Health check hook for session start\n- Documentation \\(README, CLAUDE.md, CHANGELOG.md\\)\n- Build configuration and scripts\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix: Resolve plugin configuration conflict\n\nMove skills and hooks from marketplace.json to plugin.json to fix\n\"conflicting manifest\" error. Marketplace entry now only specifies\nsource, while plugin.json contains the complete component definitions.\n\nThis fixes the EXDEV cross-device installation error caused by\nconfiguration conflicts.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(rm:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix: Resolve plugin installation EXDEV error\n\nRestructure plugin configuration to fix cross-device link error:\n- Remove skills/hooks references from plugin.json \\(metadata only\\)\n- Move hooks.json to independent hooks/ directory  \n- Add version/description to marketplace.json plugins array\n- Fix .gitignore to include scripts/*.js files\n- Add missing vibesurf-health-check.js to git\n\nThis aligns with working plugin structures \\(claude-mem, superpowers\\).\nThe EXDEV error was caused by plugin.json referencing components\ndirectly, and large node_modules causing rename failures.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(npm run install-deps)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nBuild: Add compiled JavaScript files for plugin distribution\n\n- Build TypeScript to JavaScript in skills/surf/dist/\n- Update .gitignore to include compiled files \\(dist/*.js\\)\n- Exclude node_modules from plugin distribution\n\nThis follows the pattern used by claude-mem: commit compiled code,\nnot node_modules. The plugin runs the compiled JS directly without\nneeding build tools installed.\n\nDevelopment workflow:\n1. Make changes to .ts files\n2. Run: npm run build \\(from root\\) or cd skills/surf && npm run build\n3. Commit both .ts sources and compiled .js files\n4. Delete node_modules before plugin installation testing\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(dir:*)",
+      "Bash(test:*)",
+      "Bash(git mv:*)"
     ]
   }
 }
