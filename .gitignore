@@ -13,6 +13,7 @@ build/
 *.d.ts
 !vitest.config.ts
 !*.config.js
+!scripts/*.js
 
 # IDE
 .vscode/

@@ -6,7 +6,9 @@
   "plugins": [
     {
       "name": "claude-surf",
-      "source": "./"
+      "version": "1.0.0",
+      "source": "./",
+      "description": "VibeSurf integration for browser automation, AI skills, workflows, and app integrations (Composio/MCP). Control real browsers, execute AI-powered tasks, and automate web workflows."
     }
   ],
   "metadata": {
