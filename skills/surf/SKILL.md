@@ -163,3 +163,16 @@ Browser/Web Task
 | Don't know which skill | Read skill descriptions above |
 | Action not found | Call `GET /api/tool/search` to list all actions |
 | Wrong parameters | Call `GET /api/tool/{action_name}/params` to see schema |
+
+## Getting Browser State
+
+> **🔍 Check Current Browser State**
+>
+> **When user asks about current page content or browser status** (e.g., "What's on the current page?", "What tabs are open?", "What's the browser showing?"), use the `get_browser_state` action to get the current browser state including:
+> - All open tabs and their URLs
+> - Active tab information
+> - Page content/state
+>
+> **Action:** `get_browser_state`
+>
+> This is essential when you don't have context about what the user is currently viewing in their browser.

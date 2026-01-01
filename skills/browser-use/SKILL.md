@@ -50,6 +50,20 @@ Describe the **goal**, agent figures out the **steps**:
 - ❌ "Extract prices" (use `js_code` instead)
 - ❌ "Step 1: navigate, Step 2: click..." (let agent figure it out)
 
+## Working with Existing Tabs
+
+> **🎯 Important: tab_id Selection**
+>
+> **When user refers to their already-opened pages** (e.g., "the current page", "from my open tabs", "the second tab"):
+>
+> 1. **FIRST** call `get_browser_state` to get all open tabs and their IDs
+> 2. **THEN** use the correct `tab_id` from the response
+> 3. **NEVER** use `tab_id: null` or omit it - that creates a NEW tab
+>
+> **Key distinction:**
+> - `tab_id: "existing_id"` → Work on user's existing tab
+> - `tab_id: null` or omitted → Create a brand new tab
+
 ## Parallel Execution
 
 Provide multiple tasks to run agents in parallel. Each task needs a unique `tab_id` for parallel execution.
