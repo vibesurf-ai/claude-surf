@@ -9,8 +9,6 @@ description: Use when user asks to execute, find, or run pre-built VibeSurf auto
 
 Execute pre-configured VibeSurf workflows for common automation tasks.
 
-**Prerequisite:** VibeSurf running on `http://127.0.0.1:9335`
-
 ## When to Use
 
 - You know a workflow exists for your task

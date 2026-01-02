@@ -9,8 +9,6 @@ description: Use when user needs direct browser control like navigating to URLs,
 
 Direct control of browser interactions. Use for simple, single actions.
 
-**Prerequisite:** VibeSurf running on `http://127.0.0.1:9335`
-
 ## When to Use
 
 - Navigate to a URL

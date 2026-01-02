@@ -1,6 +1,6 @@
 ---
 name: website-api
-description: Use when user asks to interact with Chinese social platforms like Xiaohongshu, Weibo, Zhihu, Douyin, or YouTube via their unified APIs.
+description: Use when user asks to interact with Social media platforms like Xiaohongshu, Weibo, Zhihu, Douyin, or YouTube via their unified APIs.
 ---
 
 # Website API - Platform APIs

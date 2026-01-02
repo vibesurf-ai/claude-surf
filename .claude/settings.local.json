@@ -9,7 +9,16 @@
       "Skill(claude-surf:browser)",
       "Skill(claude-surf:js_code)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nRefactor: Move to pure markdown skill system\n\n- Move skills/ and hooks/ from plugin/ to project root\n- Remove TypeScript build system and dist/ files\n- Remove obsolete files \\(CHANGELOG.md, LOCAL-TESTING.md, check-plugin.sh\\)\n- Update plugin configuration for flat structure\n- Simplify documentation for new architecture\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRefactor: Move to pure markdown skill system\n\n- Move skills/ and hooks/ from plugin/ to project root\n- Remove TypeScript build system and dist/ files\n- Remove obsolete files \\(CHANGELOG.md, LOCAL-TESTING.md, check-plugin.sh\\)\n- Update plugin configuration for flat structure\n- Simplify documentation for new architecture\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nDocs: Fix local installation instructions\n\nUse correct commands: marketplace add ./ then plugin install claude-surf\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
+      "WebSearch",
+      "Bash(git commit:*)",
+      "Skill(js_code)",
+      "Skill(browser-use)",
+      "Skill(browser)",
+      "Bash(chcp:*)",
+      "Bash(node:*)"
     ]
   }
 }

@@ -112,10 +112,10 @@ Browser/Web Task
 ├─ Multi-step automation? → browser-use (execute_browser_use_agent)
 │  Examples: "Fill out this form", "Extract data from multiple pages", "Login and check dashboard"
 │
-├─ Platform API (XiaoHongShu/etc)? → website-api
+├─ Platform API (XiaoHongShu/Youtube/etc)? → website-api
 │  Examples: "Get XiaoHongShu posts", "Call Weibo API"
 │
-├─ External app (Gmail/GitHub)? → integrations
+├─ External app (Gmail/Google Calendar/GitHub)? → integrations
 │  Examples: "Send email via Gmail", "Create GitHub PR", "Post to Slack"
 │
 └─ Pre-built workflow? → workflows
@@ -152,6 +152,7 @@ Browser/Web Task
 | "Navigate and click" | `browser` | `browser.navigate`, `browser.click` |
 | "Fill out this form" | `browser-use` | `execute_browser_use_agent` |
 | "Get XiaoHongShu posts" | `website-api` | `call_website_api` |
+| "Get Youtube video content or transcript" | `website-api` | `call_website_api` |
 | "Send Gmail" | `integrations` | `execute_extra_tool` |
 | "Run video download" | `workflows` | `execute_workflow` |
 

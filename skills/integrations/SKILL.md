@@ -9,8 +9,6 @@ description: Use when user asks to interact with external apps like Gmail, GitHu
 
 Direct API access to 100+ external apps via Composio and MCP integrations.
 
-**Prerequisite:** VibeSurf running on `http://127.0.0.1:9335`
-
 ## When to Use
 
 - User needs Gmail, GitHub, Slack, etc.
@@ -44,8 +42,6 @@ Direct API access to 100+ external apps via Composio and MCP integrations.
 cpo.{service}.{action}     # Composio tools
 mcp.{server}.{action}      # MCP tools
 ```
-
-Examples: `cpo.gmail.send_email`, `cpo.github.create_pull_request`
 
 ## Common Integrations
 

@@ -9,8 +9,6 @@ description: Use when task requires multiple steps, unknown UI, form filling, or
 
 Launch AI sub-agents that complete multi-step browser tasks autonomously. **Most powerful VibeSurf capability.**
 
-**Prerequisite:** VibeSurf running on `http://127.0.0.1:9335`
-
 ## When to Use
 
 - Multi-step workflows (3+ steps)
