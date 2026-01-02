@@ -237,7 +237,11 @@ All `browser.*` actions for direct control:
 ### Local Testing Workflow
 
 1. **Start VibeSurf**: `vibesurf`
-2. **Install plugin**: `/plugin install ./` (from project root)
+2. **Install plugin**:
+   ```bash
+   /plugin marketplace add ./
+   /plugin install surf
+   ```
 3. **Restart Claude Code**
 4. **Test**: Ask Claude to search web, navigate browser, etc.
 
