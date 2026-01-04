@@ -41,6 +41,10 @@ Direct control of browser interactions. Use for simple, single actions.
 | `browser.download_media` | Download media from URL |
 | `browser.get_html_content` | Get HTML content and save to file |
 | `browser.reload_page` | Refresh current page |
+| `browser.start_console_logging` | Start monitoring console logs (console.log/warn/error) |
+| `browser.stop_console_logging` | Stop console logging and retrieve all logs |
+| `browser.start_network_logging` | Start monitoring network traffic (requests/responses) |
+| `browser.stop_network_logging` | Stop network logging and get HAR file |
 
 ## Key Actions
 
@@ -69,6 +73,15 @@ Direct control of browser interactions. Use for simple, single actions.
 
 ### Advanced
 - `browser.evaluate` - Execute custom JavaScript
+
+### Debugging & Testing
+- `browser.start_console_logging` - Start monitoring console logs
+- `browser.stop_console_logging` - Stop and retrieve console logs (saved to file)
+- `browser.start_network_logging` - Start monitoring network traffic
+- `browser.stop_network_logging` - Stop and retrieve network logs as HAR file
+
+**Use case**: Website testing, local frontend/backend debugging, reverse engineering
+**Workflow**: Call `start_*` first, perform actions, then call `stop_*` to get logs
 
 ## When NOT to Use
 

@@ -82,8 +82,9 @@ Content-Type: application/json
 ```
 Browser/Web Task
 │
-├─ Need to search? → search (skill_search)
+├─ Need to search for information/bug/issue? → search (skill_search) [PREFERRED]
 │  Examples: "Search for solutions to [bug name]", "Find latest info about [topic]"
+│  Fallback: If skill_search doesn't find complete info → browser.search + browser.click + extract/summary/crawl
 │
 ├─ Need to open website? → browser (browser.navigate)
 │  Examples: "Open documentation site", "Go to [URL]", "Check this page"
@@ -108,6 +109,11 @@ Browser/Web Task
 │
 ├─ Single browser action? → browser (browser.*)
 │  Examples: "Click the button", "Type in the field", "Scroll down"
+│
+├─ Debug/test website or monitor logs? → browser (debugging actions)
+│  Examples: "Monitor console logs", "Capture network traffic", "Debug this page"
+│  Workflow: start_console_logging/start_network_logging → perform actions → stop_*_logging
+│  Use cases: Website testing, frontend/backend debugging, reverse engineering
 │
 ├─ Multi-step automation? → browser-use (execute_browser_use_agent)
 │  Examples: "Fill out this form", "Extract data from multiple pages", "Login and check dashboard"
@@ -143,7 +149,8 @@ Browser/Web Task
 
 | Request | Use Skill | Action |
 |---------|-----------|--------|
-| "Search for X" | `search` | `skill_search` |
+| "Search for X" | `search` | `skill_search` (preferred) |
+| "Search for bug/issue" | `search` first, fallback to `browser` | `skill_search`, then `browser.search` + extract if needed |
 | "Extract all prices" | `js_code` | `skill_code` |
 | "Summarize this page" | `summary` | `skill_summary` |
 | "Stock info for AAPL" | `finance` | `skill_finance` |
@@ -155,6 +162,9 @@ Browser/Web Task
 | "Get Youtube video content or transcript" | `website-api` | `call_website_api` |
 | "Send Gmail" | `integrations` | `execute_extra_tool` |
 | "Run video download" | `workflows` | `execute_workflow` |
+| "Debug console logs" | `browser` | `browser.start_console_logging` → actions → `browser.stop_console_logging` |
+| "Monitor network traffic" | `browser` | `browser.start_network_logging` → actions → `browser.stop_network_logging` |
+| "Test this website" | `browser` | Use console/network logging actions |
 
 ## Error Handling
 
