@@ -237,10 +237,12 @@ All `browser.*` actions for direct control:
 **CRITICAL**: Claude Code must NEVER run the `vibesurf` command or attempt to install/start VibeSurf.
 
 ### Policy
+- **CRITICAL**: Read the status from SessionStart hook FIRST (shown at top of surf skill)
+  - Format: `<SURF_SKILLS>**VibeSurf Integration** - Status: running/not_running`
+  - **DO NOT IGNORE THIS STATUS** - it's already been checked
 - **NEVER** execute: `vibesurf`, `uv tool install vibesurf`, or similar commands
-- **USE the auto-detected status** from SessionStart hook (shown in skill context)
-- **IF NOT RUNNING**: Inform user to start VibeSurf manually, DO NOT run commands
-- **NO manual health checks needed**: SessionStart hook already detected status
+- **IF Status: not_running**: Inform user to start VibeSurf manually, DO NOT run commands
+- **Manual re-check** (only if needed): `curl http://127.0.0.1:9335/health`
 
 ### Why?
 - VibeSurf is a long-running service that users manage

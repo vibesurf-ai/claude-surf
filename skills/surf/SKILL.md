@@ -11,13 +11,21 @@ Control real browsers through VibeSurf. This skill delegates to specialized sub-
 
 **Prerequisites:** VibeSurf running on `http://127.0.0.1:9335`
 
-> **⚠️ IMPORTANT: VibeSurf Status Detection**
+> **🚨 CRITICAL: READ VIBESURF STATUS FIRST**
 >
-> - The SessionStart hook **already checked** VibeSurf status at session start
-> - Check the status in the context: **Status: running** or **Status: not_running**
-> - **If status is 'running'**: Use surf skills directly, no additional checks needed
-> - **If status is 'not_running'**: Inform user to start VibeSurf manually
-> - **NEVER** execute `vibesurf` or `uv tool install vibesurf` commands yourself
+> **BEFORE doing anything with surf, LOOK at the status at the TOP of this skill content:**
+> - You will see: `<SURF_SKILLS>**VibeSurf Integration** - Status: running` or `Status: not_running`
+> - This status was **ALREADY DETECTED** by SessionStart hook - DO NOT IGNORE IT
+>
+> **What to do based on status:**
+> - ✅ **Status: running** → Use surf skills directly, proceed normally
+> - ❌ **Status: not_running** → Stop, inform user to run `vibesurf`, DO NOT run it yourself
+>
+> **If you need to re-check status during the session:**
+> - Use: `curl http://127.0.0.1:9335/health` (returns HTTP 200 if running)
+> - Only do this if user explicitly asks or if you suspect status changed
+>
+> **NEVER execute `vibesurf` or installation commands yourself**
 
 ## How to Call VibeSurf API
 
@@ -180,13 +188,24 @@ Browser/Web Task
 | Action not found | Call `GET /api/tool/search` to list all actions |
 | Wrong parameters | Call `GET /api/tool/{action_name}/params` to see schema |
 
-## VibeSurf Status (Auto-Detected)
+## VibeSurf Status (Auto-Detected at Session Start)
 
-**The SessionStart hook automatically detects VibeSurf status when the session starts.**
+**🔍 LOOK FOR THE STATUS IN THE CONTEXT ABOVE - DO NOT IGNORE IT**
 
-Check the status at the top of this skill content:
+The status appears at the very top:
+```
+<SURF_SKILLS>**VibeSurf Integration** - Status: running/not_running
+```
+
+**Actions based on status:**
 - **Status: running** → VibeSurf is ready, use surf actions directly
 - **Status: not_running** → Inform user to start VibeSurf, **DO NOT** run commands to start it yourself
+
+**To manually re-check status (only if needed):**
+```bash
+curl http://127.0.0.1:9335/health
+# Returns HTTP 200 if running, connection error if not running
+```
 
 ## Getting Browser State
 
