@@ -186,9 +186,7 @@ Browser/Web Task
 
 Check the status at the top of this skill content:
 - **Status: running** → VibeSurf is ready, use surf actions directly
-- **Status: not_running** → VibeSurf is not running, inform user to start it
-
-**You do NOT need to run health checks manually.** The status is already available in context.
+- **Status: not_running** → Inform user to start VibeSurf, **DO NOT** run commands to start it yourself
 
 ## Getting Browser State
 
