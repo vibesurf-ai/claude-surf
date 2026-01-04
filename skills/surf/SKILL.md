@@ -9,10 +9,14 @@ description: Use when user asks to browse websites, automate browser tasks, fill
 
 Control real browsers through VibeSurf. This skill delegates to specialized sub-skills.
 
-**Prerequisites:** VibeSurf running on `http://127.0.0.1:9335`:
-```bash
-vibesurf  # or: uv tool install vibesurf
-```
+**Prerequisites:** VibeSurf running on `http://127.0.0.1:9335`
+
+> **⚠️ IMPORTANT: Do NOT run `vibesurf` command**
+>
+> - **NEVER** execute `vibesurf` or `uv tool install vibesurf` commands
+> - VibeSurf must be started by the user manually
+> - **ALWAYS** check if VibeSurf is running using: `curl http://127.0.0.1:9335/health`
+> - If not running, **ONLY** inform the user to start it themselves
 
 ## How to Call VibeSurf API
 
@@ -170,10 +174,23 @@ Browser/Web Task
 
 | Error | Solution |
 |-------|----------|
-| VibeSurf not running | Run `vibesurf` |
+| VibeSurf not running | **Check**: `curl http://127.0.0.1:9335/health`<br>**If down**: Inform user to run `vibesurf` themselves<br>**NEVER** run the command yourself |
 | Don't know which skill | Read skill descriptions above |
 | Action not found | Call `GET /api/tool/search` to list all actions |
 | Wrong parameters | Call `GET /api/tool/{action_name}/params` to see schema |
+
+## VibeSurf Health Check
+
+**Before using any surf action**, check if VibeSurf is running:
+
+```bash
+curl http://127.0.0.1:9335/health
+```
+
+- **Success (200)**: VibeSurf is running, proceed with actions
+- **Failure**: VibeSurf is not running, inform user to start it
+
+**DO NOT** attempt to start VibeSurf automatically.
 
 ## Getting Browser State
 

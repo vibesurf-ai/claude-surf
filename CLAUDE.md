@@ -232,11 +232,26 @@ All `browser.*` actions for direct control:
 - `get_tool_info` - Get tool schema
 - `execute_extra_tool` - Run app action
 
+## Important: VibeSurf Execution Policy
+
+**CRITICAL**: Claude Code must NEVER run the `vibesurf` command or attempt to install/start VibeSurf.
+
+### Policy
+- **NEVER** execute: `vibesurf`, `uv tool install vibesurf`, or similar commands
+- **ALWAYS** check health first: `curl http://127.0.0.1:9335/health`
+- **IF NOT RUNNING**: Inform user to start VibeSurf manually
+- The SessionStart hook already detects VibeSurf status and notifies user
+
+### Why?
+- VibeSurf is a long-running service that users manage
+- It may require specific configurations or environments
+- Auto-starting could interfere with user's workflow
+
 ## Testing the Plugin
 
 ### Local Testing Workflow
 
-1. **Start VibeSurf**: `vibesurf`
+1. **User starts VibeSurf**: `vibesurf` (user does this, not Claude)
 2. **Install plugin**:
    ```bash
    /plugin marketplace add ./
