@@ -238,9 +238,9 @@ All `browser.*` actions for direct control:
 
 ### Policy
 - **NEVER** execute: `vibesurf`, `uv tool install vibesurf`, or similar commands
-- **ALWAYS** check health first: `curl http://127.0.0.1:9335/health`
-- **IF NOT RUNNING**: Inform user to start VibeSurf manually
-- The SessionStart hook already detects VibeSurf status and notifies user
+- **USE the auto-detected status** from SessionStart hook (shown in skill context)
+- **IF NOT RUNNING**: Inform user to start VibeSurf manually, DO NOT run commands
+- **NO manual health checks needed**: SessionStart hook already detected status
 
 ### Why?
 - VibeSurf is a long-running service that users manage

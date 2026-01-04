@@ -11,12 +11,13 @@ Control real browsers through VibeSurf. This skill delegates to specialized sub-
 
 **Prerequisites:** VibeSurf running on `http://127.0.0.1:9335`
 
-> **⚠️ IMPORTANT: Do NOT run `vibesurf` command**
+> **⚠️ IMPORTANT: VibeSurf Status Detection**
 >
-> - **NEVER** execute `vibesurf` or `uv tool install vibesurf` commands
-> - VibeSurf must be started by the user manually
-> - **ALWAYS** check if VibeSurf is running using: `curl http://127.0.0.1:9335/health`
-> - If not running, **ONLY** inform the user to start it themselves
+> - The SessionStart hook **already checked** VibeSurf status at session start
+> - Check the status in the context: **Status: running** or **Status: not_running**
+> - **If status is 'running'**: Use surf skills directly, no additional checks needed
+> - **If status is 'not_running'**: Inform user to start VibeSurf manually
+> - **NEVER** execute `vibesurf` or `uv tool install vibesurf` commands yourself
 
 ## How to Call VibeSurf API
 
@@ -174,23 +175,20 @@ Browser/Web Task
 
 | Error | Solution |
 |-------|----------|
-| VibeSurf not running | **Check**: `curl http://127.0.0.1:9335/health`<br>**If down**: Inform user to run `vibesurf` themselves<br>**NEVER** run the command yourself |
+| VibeSurf not running | **Check status in context** (SessionStart hook already detected)<br>**If not_running**: Inform user to run `vibesurf`<br>**NEVER** run the command yourself |
 | Don't know which skill | Read skill descriptions above |
 | Action not found | Call `GET /api/tool/search` to list all actions |
 | Wrong parameters | Call `GET /api/tool/{action_name}/params` to see schema |
 
-## VibeSurf Health Check
+## VibeSurf Status (Auto-Detected)
 
-**Before using any surf action**, check if VibeSurf is running:
+**The SessionStart hook automatically detects VibeSurf status when the session starts.**
 
-```bash
-curl http://127.0.0.1:9335/health
-```
+Check the status at the top of this skill content:
+- **Status: running** → VibeSurf is ready, use surf actions directly
+- **Status: not_running** → VibeSurf is not running, inform user to start it
 
-- **Success (200)**: VibeSurf is running, proceed with actions
-- **Failure**: VibeSurf is not running, inform user to start it
-
-**DO NOT** attempt to start VibeSurf automatically.
+**You do NOT need to run health checks manually.** The status is already available in context.
 
 ## Getting Browser State
 
