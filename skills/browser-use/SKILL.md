@@ -11,15 +11,13 @@ Launch AI sub-agents that complete multi-step browser tasks autonomously. **Most
 
 ## When to Use
 
-- Multi-step workflows (3+ steps)
-- Form filling
-- Unknown UI/complex navigation
-- Parallel automation across tabs
-- Research across multiple sites
+**browser-use is a high-level, task-oriented sub-agent approach:**
+- Complex tasks where you describe the **goal** and desired **output**, let the agent figure out the steps
+- Long workflows that would require many manual browser operations
+- Unknown or dynamic UI that needs autonomous exploration
+- Parallel automation across multiple tabs
 
-**Don't use for:**
-- Single action → Use `browser` skill
-- Simple data extraction → Use `js_code`, `crawl`, or `search` skills
+**Note:** browser-use and `browser` skill are complementary, not mutually exclusive. Both can accomplish the same tasks - browser-use is higher-level automation, while `browser` gives you precise control.
 
 ## Available Actions
 
@@ -84,12 +82,26 @@ Provide multiple tasks to run agents in parallel. Each task needs a unique `tab_
 | Using for simple extraction | Use `js_code` or `crawl` instead |
 | Duplicate tab_id in parallel | Each agent needs unique tab_id |
 
-## Decision Guide
+## Fallback Strategy
 
-| Choose | When |
-|--------|------|
-| `browser` | 1-2 steps, known elements |
-| `browser-use` | 3+ steps, unknown UI, parallel tasks |
-| `js_code`/`crawl`/`search` | Simple data extraction |
+> **🔄 When browser-use Fails or Needs Manual Control**
+>
+> If `execute_browser_use_agent` fails, gets stuck, or you need more precise control:
+>
+> **Seamlessly fallback to manual `browser` operations:**
+> 1. `get_browser_state` - Inspect current page state and available elements
+> 2. `browser.{action}` - Perform specific action (click, input, navigate, etc.)
+> 3. `get_browser_state` - Verify result and determine next action
+> 4. Repeat this cycle until task completes
+>
+> **This is the recommended recovery pattern** - browser-use and browser are complementary tools.
 
-**Rule of thumb:** More than 2 steps OR don't know exact elements → use `browser-use`.
+## Choosing the Right Approach
+
+| Approach | Best For | Characteristics |
+|----------|----------|-----------------|
+| **browser-use** | Complex, long tasks | Task-oriented, autonomous, describe goal + output |
+| **browser** | Precise control needed | Step-by-step, explicit actions, full control |
+| **Hybrid** | Best of both | Start with browser-use, fallback to browser if needed |
+
+**Principle:** Choose based on task complexity and control needs, not step count. Both can handle multi-step workflows and form filling.

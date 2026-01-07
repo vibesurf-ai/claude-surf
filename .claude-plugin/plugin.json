@@ -1,7 +1,7 @@
 {
   "name": "surf",
   "description": "VibeSurf integration - Control browsers, automate workflows, execute AI skills (search/crawl/js_code/summary), use Composio integrations (Gmail/GitHub/Slack), and run pre-built workflows",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "author": {
     "name": "VibeSurf Community"
   },

@@ -11,11 +11,13 @@ Direct control of browser interactions. Use for simple, single actions.
 
 ## When to Use
 
-- Navigate to a URL
-- Click/input/scroll
-- Switch/close tabs
-- Get page state
-- Extract visible data
+**browser provides low-level, precise control over browser operations:**
+- When you need explicit control over each action
+- When you want to verify results at each step
+- As a fallback when `browser-use` agent fails or gets stuck
+- Any browser automation task (navigation, clicking, form filling, etc.)
+
+**Note:** browser and `browser-use` are complementary. Both can accomplish the same tasks - browser gives precise step-by-step control, while browser-use provides high-level task automation.
 
 ## Available Actions
 
@@ -83,11 +85,22 @@ Direct control of browser interactions. Use for simple, single actions.
 **Use case**: Website testing, local frontend/backend debugging, reverse engineering
 **Workflow**: Call `start_*` first, perform actions, then call `stop_*` to get logs
 
-## When NOT to Use
+## Relationship with browser-use
 
-- Multi-step automation → Use `browser-use` skill
-- Form filling → Use `browser-use` skill
-- Simple data extraction → Use `js_code`, `crawl`, or `browser.extract`
+**browser and browser-use are complementary, not exclusive:**
+- **browser-use**: High-level, task-oriented sub-agent (describe goal, agent figures out steps)
+- **browser**: Low-level, precise control (explicit step-by-step operations)
+
+**When to prefer browser-use:**
+- Complex tasks with long workflows
+- When describing the goal is easier than specifying steps
+
+**When to prefer browser:**
+- Need precise control over each action
+- Want to verify intermediate results
+- browser-use failed or got stuck (use as fallback)
+
+**Best practice:** Try browser-use for complex tasks first, fallback to browser for manual control if needed.
 
 ## Best Practices
 
@@ -96,3 +109,19 @@ Direct control of browser interactions. Use for simple, single actions.
 3. Tab IDs are last 4 characters of target_id
 4. Use `browser.extract` for LLM-based extraction from page markdown
 5. Use `browser.evaluate` for custom JavaScript operations
+
+## Manual Control Pattern (Fallback from browser-use)
+
+> **🎯 Iterative Control Loop**
+>
+> Use this pattern when browser-use fails or you need precise control:
+>
+> ```
+> 1. get_browser_state    → See page state, available elements
+> 2. browser.{action}     → Perform action (click, input, navigate...)
+> 3. get_browser_state    → Verify result, plan next step
+> 4. Repeat until complete
+> ```
+>
+> **This pattern works for any task** - form filling, navigation, data extraction, etc.
+> It's the manual alternative to browser-use's autonomous approach.

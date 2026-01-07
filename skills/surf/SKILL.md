@@ -84,8 +84,8 @@ Content-Type: application/json
 | Stock/financial data | `finance` | `skill_finance` |
 | Trending news | `trend` | `skill_trend` |
 | Screenshot | `screenshot` | `skill_screenshot` |
-| Direct browser actions | `browser` | `browser.*` actions |
-| Multi-step automation | `browser-use` | `execute_browser_use_agent` |
+| Precise browser control | `browser` | `browser.*` actions |
+| Task-oriented automation (sub-agent) | `browser-use` | `execute_browser_use_agent` |
 | Social Media Platform APIs | `website-api` | `get_website_api_params`, `call_website_api` |
 | Pre-built workflows | `workflows` | `search_workflows`, `execute_workflow` |
 | Gmail/GitHub/Slack | `integrations` | `get_all_toolkit_types`, `execute_extra_tool` |
@@ -120,16 +120,19 @@ Browser/Web Task
 ├─ Screenshot? → screenshot (skill_screenshot)
 │  Examples: "Take a screenshot", "Show me the page"
 │
-├─ Single browser action? → browser (browser.*)
-│  Examples: "Click the button", "Type in the field", "Scroll down"
+├─ Need precise control or step-by-step operations? → browser (browser.*)
+│  Examples: "Click the button", "Type in the field", "Scroll down", "Navigate then click"
+│  Use for: Any browser task where you want explicit control over each action
 │
 ├─ Debug/test website or monitor logs? → browser (debugging actions)
 │  Examples: "Monitor console logs", "Capture network traffic", "Debug this page"
 │  Workflow: start_console_logging/start_network_logging → perform actions → stop_*_logging
 │  Use cases: Website testing, frontend/backend debugging, reverse engineering
 │
-├─ Multi-step automation? → browser-use (execute_browser_use_agent)
+├─ Complex task-oriented automation? → browser-use (execute_browser_use_agent)
 │  Examples: "Fill out this form", "Extract data from multiple pages", "Login and check dashboard"
+│  Use for: Complex tasks where describing the goal is easier than specifying steps
+│  Fallback: If browser-use fails → use browser with get_browser_state loop
 │
 ├─ Platform API (XiaoHongShu/Youtube/etc)? → website-api
 │  Examples: "Get XiaoHongShu posts", "Call Weibo API"
@@ -153,7 +156,7 @@ Browser/Web Task
 | Hot topics | `trend` | `skill_trend` |
 | Take screenshot | `screenshot` | `skill_screenshot` |
 | Click/navigate/type | `browser` | `browser.click`, `browser.navigate`, etc. |
-| Fill form | `browser-use` | `execute_browser_use_agent` |
+| Task-oriented automation | `browser-use` | `execute_browser_use_agent` (fallback to `browser` if fails) |
 | Social Media Platform APIs | `website-api` | `call_website_api` |
 | Send email | `integrations` | `execute_extra_tool` |
 | Run workflow | `workflows` | `execute_workflow` |
@@ -170,7 +173,7 @@ Browser/Web Task
 | "What's trending" | `trend` | `skill_trend` |
 | "Take a screenshot" | `screenshot` | `skill_screenshot` |
 | "Navigate and click" | `browser` | `browser.navigate`, `browser.click` |
-| "Fill out this form" | `browser-use` | `execute_browser_use_agent` |
+| "Fill out this form" | `browser-use` or `browser` | `execute_browser_use_agent` (or manual `browser` operations) |
 | "Get XiaoHongShu posts" | `website-api` | `call_website_api` |
 | "Get Youtube video content or transcript" | `website-api` | `call_website_api` |
 | "Send Gmail" | `integrations` | `execute_extra_tool` |
@@ -187,6 +190,7 @@ Browser/Web Task
 | Don't know which skill | Read skill descriptions above |
 | Action not found | Call `GET /api/tool/search` to list all actions |
 | Wrong parameters | Call `GET /api/tool/{action_name}/params` to see schema |
+| browser-use fails or gets stuck | Fallback to `browser`: use `get_browser_state` → `browser.{action}` → repeat loop |
 
 ## VibeSurf Status (Auto-Detected at Session Start)
 
@@ -219,3 +223,24 @@ curl http://127.0.0.1:9335/health
 > **Action:** `get_browser_state`
 >
 > This is essential when you don't have context about what the user is currently viewing in their browser.
+
+## browser vs browser-use
+
+**Both skills can accomplish the same browser tasks - they're complementary tools:**
+
+| Approach | Best For | How It Works |
+|----------|----------|--------------|
+| **browser-use** | Complex, long tasks | Task-oriented sub-agent: describe goal + desired output, agent figures out steps |
+| **browser** | Precise control | Step-by-step manual control: explicit actions with full visibility |
+| **Hybrid** | Best reliability | Try browser-use first, fallback to browser if it fails |
+
+**Fallback pattern when browser-use fails:**
+```
+browser-use fails or gets stuck
+→ get_browser_state (inspect page)
+→ browser.{action} (perform action)
+→ get_browser_state (verify & plan next)
+→ repeat until complete
+```
+
+**Key principle:** Choose based on task complexity and control needs, not step count. Browser-use is not exclusive to multi-step tasks; browser can handle complex workflows too.

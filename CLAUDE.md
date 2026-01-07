@@ -190,8 +190,13 @@ Content-Type: application/json
 
 | Skill | Actions | Purpose |
 |-------|---------|---------|
-| `browser` | 21 actions (browser.*) | Direct control (navigate, click, input, etc.) |
-| `browser-use` | `execute_browser_use_agent` | AI multi-step automation |
+| `browser` | 21 actions (browser.*) | Precise step-by-step control (navigate, click, input, etc.) |
+| `browser-use` | `execute_browser_use_agent` | Task-oriented sub-agent automation |
+
+**Note**: These two skills are **complementary**, not mutually exclusive. Both can accomplish the same tasks:
+- `browser-use`: High-level, describe goal + desired output, agent figures out steps
+- `browser`: Low-level, explicit control over each action
+- **Fallback pattern**: If browser-use fails → use `get_browser_state` → `browser.{action}` → repeat loop
 
 ### Integration Skills (3)
 
@@ -203,27 +208,32 @@ Content-Type: application/json
 
 ## Important VibeSurf Actions
 
-### Browser-Use Agent (Most Powerful)
+### Browser-Use Agent (Task-Oriented Sub-Agent)
 
 **Action**: `execute_browser_use_agent`
 
-Launches autonomous AI agents for multi-step tasks:
+Launches autonomous AI agents for task-oriented automation:
 - Supports parallel execution (unique tab_id per agent)
-- Task-oriented: describe goal, agent figures out steps
-- Use for: Form filling, multi-site research, complex extraction
+- Task-oriented: describe goal + desired output, agent figures out steps
+- Use for: Complex tasks, form filling, multi-site research, data extraction
 
-**When to use**: Any task with >2 steps or multiple tabs
+**When to use**: Complex tasks where describing the goal is easier than specifying steps
 
-### Browser Actions
+**Fallback when it fails**: Use `browser` skill with `get_browser_state` → `browser.{action}` → repeat loop
 
-All `browser.*` actions for direct control:
+### Browser Actions (Precise Control)
+
+All `browser.*` actions for step-by-step manual control:
 - `browser.navigate` - Go to URL
 - `browser.click` - Click element
 - `browser.input` - Type text
 - `browser.switch` - Switch tabs
 - `browser.extract` - LLM data extraction
 - `browser.screenshot` - Take screenshot
+- `get_browser_state` - Inspect current page state
 - And 15 more...
+
+**Use for**: Any browser task where you want explicit control, or as fallback when browser-use fails
 
 ### Extra Tools (Composio/MCP)
 
@@ -283,6 +293,33 @@ When modifying functionality:
 3. Keep skill descriptions consistent with actual VibeSurf API
 4. Test with Claude Code to verify skill loading
 
+## Release Process
+
+**CRITICAL: Always update version before committing and pushing**
+
+When making changes that should be released:
+
+1. **Update version** in `.claude-plugin/plugin.json`:
+   ```json
+   {
+     "version": "X.Y.Z"
+   }
+   ```
+
+2. **Version numbering**:
+   - Major (X): Breaking changes, major new features
+   - Minor (Y): New features, backward compatible
+   - Patch (Z): Bug fixes, documentation updates
+
+3. **Then commit and push**:
+   ```bash
+   git add .
+   git commit -m "..."
+   git push
+   ```
+
+**⚠️ IMPORTANT**: Never commit without updating the version if the changes affect functionality or documentation that users rely on.
+
 ## Key Design Patterns
 
 ### Error Handling
@@ -314,3 +351,23 @@ When user makes a browser/automation request:
 2. `surf` skill points to appropriate specialized skill
 3. Use Skill tool to load that skill
 4. Follow skill's guidance to call VibeSurf API
+
+### Browser vs Browser-Use Pattern
+
+**Complementary relationship** - not mutually exclusive:
+
+| Approach | Characteristics | Best For |
+|----------|----------------|----------|
+| **browser-use** | High-level, task-oriented sub-agent | Complex tasks, describe goal + output |
+| **browser** | Low-level, step-by-step control | Precise control, fallback mechanism |
+| **Hybrid** | Best reliability | Try browser-use first, fallback to browser if needed |
+
+**Fallback workflow when browser-use fails:**
+```
+1. get_browser_state    → Inspect page state and available elements
+2. browser.{action}     → Perform specific action
+3. get_browser_state    → Verify result and plan next step
+4. Repeat until complete
+```
+
+**Selection principle**: Choose based on task complexity and control needs, NOT step count. Both can handle multi-step workflows and form filling.
