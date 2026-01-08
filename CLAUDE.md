@@ -33,6 +33,7 @@ claude-surf/
 ├── skills/
 │   ├── surf/                # Main entry skill (auto-injected)
 │   ├── search/              # AI web search
+│   ├── fetch/               # Fetch URL content as markdown
 │   ├── js_code/             # Structured data extraction
 │   ├── crawl/               # Page content extraction
 │   ├── summary/             # Page summarization
@@ -59,8 +60,9 @@ claude-surf/
 
 ### On-Demand Skills
 
-All other 12 skills are loaded via the **Skill tool** when needed:
+All other 13 skills are loaded via the **Skill tool** when needed:
 - `search` - AI web search
+- `fetch` - Fetch URL content as structured markdown
 - `js_code` - Extract structured data with auto-generated JS
 - `crawl` - Extract page content
 - `summary` - Summarize webpages
@@ -174,11 +176,12 @@ Content-Type: application/json
 
 ## Skill Reference
 
-### AI Skills (7)
+### AI Skills (8)
 
 | Skill | Action | Purpose |
 |-------|--------|---------|
 | `search` | `skill_search` | AI-powered web search (Gemini) |
+| `fetch` | `skill_fetch` | Fetch URL content as structured markdown |
 | `js_code` | `skill_code` | Auto-generate JS to extract lists/tables |
 | `crawl` | `skill_crawl` | Extract page content with LLM |
 | `summary` | `skill_summary` | Summarize webpage |

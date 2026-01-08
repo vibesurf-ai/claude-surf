@@ -78,6 +78,7 @@ Content-Type: application/json
 | Task Type | Use Skill | Action Name |
 |-----------|-----------|-------------|
 | AI web search | `search` | `skill_search` |
+| Fetch URL content as markdown | `fetch` | `skill_fetch` |
 | Extract lists/tables | `js_code` | `skill_code` |
 | Extract page content | `crawl` | `skill_crawl` |
 | Summarize page | `summary` | `skill_summary` |
@@ -98,6 +99,10 @@ Browser/Web Task
 ├─ Need to search for information/bug/issue? → search (skill_search) [PREFERRED]
 │  Examples: "Search for solutions to [bug name]", "Find latest info about [topic]"
 │  Fallback: If skill_search doesn't find complete info → browser.search + browser.click + extract/summary/crawl
+│
+├─ Need to fetch URL content directly? → fetch (skill_fetch)
+│  Examples: "Fetch content from [URL]", "Get documentation at [URL]", "Read this webpage"
+│  Use for: Getting structured markdown from any URL without browser interaction
 │
 ├─ Need to open website? → browser (browser.navigate)
 │  Examples: "Open documentation site", "Go to [URL]", "Check this page"
@@ -149,6 +154,7 @@ Browser/Web Task
 | Goal | Skill | Action |
 |------|-------|--------|
 | Search web | `search` | `skill_search` |
+| Fetch URL content | `fetch` | `skill_fetch` |
 | Extract prices/products | `js_code` | `skill_code` |
 | Get main content | `crawl` | `skill_crawl` |
 | Summarize page | `summary` | `skill_summary` |
@@ -167,6 +173,9 @@ Browser/Web Task
 |---------|-----------|--------|
 | "Search for X" | `search` | `skill_search` (preferred) |
 | "Search for bug/issue" | `search` first, fallback to `browser` | `skill_search`, then `browser.search` + extract if needed |
+| "Fetch content from [URL]" | `fetch` | `skill_fetch` |
+| "Get documentation at [URL]" | `fetch` | `skill_fetch` |
+| "Read this webpage" | `fetch` | `skill_fetch` |
 | "Extract all prices" | `js_code` | `skill_code` |
 | "Summarize this page" | `summary` | `skill_summary` |
 | "Stock info for AAPL" | `finance` | `skill_finance` |

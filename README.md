@@ -78,6 +78,7 @@ The plugin provides these specialized skills:
 | Skill | Purpose |
 |-------|---------|
 | `search` | AI-powered web search |
+| `fetch` | Fetch URL content as structured markdown |
 | `js_code` | Auto-generate JS to extract lists/tables |
 | `crawl` | Extract page content with LLM |
 | `summary` | Summarize webpage |
@@ -103,6 +104,7 @@ The plugin provides these specialized skills:
 | Goal | Use Skill |
 |------|----------|
 | Search web | `search` |
+| Fetch URL content | `fetch` |
 | Extract prices/products | `js_code` |
 | Summarize page | `summary` |
 | Stock data | `finance` |
@@ -150,6 +152,7 @@ claude-surf/
 ├── skills/
 │   ├── surf/                # Main entry point
 │   ├── search/              # AI web search
+│   ├── fetch/               # Fetch URL content as markdown
 │   ├── js_code/             # Structured data extraction
 │   ├── crawl/               # Page content extraction
 │   ├── summary/             # Page summarization
