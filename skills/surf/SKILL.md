@@ -9,12 +9,11 @@ description: Use when user asks to browse websites, automate browser tasks, fill
 
 Control real browsers through VibeSurf. This skill delegates to specialized sub-skills.
 
-**Prerequisites:** VibeSurf running on `http://127.0.0.1:9335`
-
 > **🚨 CRITICAL: READ VIBESURF STATUS FIRST**
 >
 > **BEFORE doing anything with surf, LOOK at the status at the TOP of this skill content:**
-> - You will see: `<SURF_SKILLS>**VibeSurf Integration** - Status: running` or `Status: not_running`
+> - You will see: `<SURF_SKILLS>**VibeSurf Integration** - Status: running (Endpoint: ...)` or `Status: not_running`
+> - The endpoint is configured via the `VIBESURF_ENDPOINT` environment variable (defaults to `http://127.0.0.1:9335`)
 > - This status was **ALREADY DETECTED** by SessionStart hook - DO NOT IGNORE IT
 >
 > **What to do based on status:**
@@ -22,30 +21,31 @@ Control real browsers through VibeSurf. This skill delegates to specialized sub-
 > - ❌ **Status: not_running** → Stop, inform user to run `vibesurf`, DO NOT run it yourself
 >
 > **If you need to re-check status during the session:**
-> - Use: `curl http://127.0.0.1:9335/health` (returns HTTP 200 if running)
+> - Use: `curl $VIBESURF_ENDPOINT/health` (returns HTTP 200 if running)
+> - Default endpoint: `http://127.0.0.1:9335` (if VIBESURF_ENDPOINT is not set)
 > - Only do this if user explicitly asks or if you suspect status changed
 >
 > **NEVER execute `vibesurf` or installation commands yourself**
 
 ## How to Call VibeSurf API
 
-VibeSurf exposes three core HTTP endpoints. All requests go to `http://127.0.0.1:9335`:
+VibeSurf exposes three core HTTP endpoints. All requests go to the configured endpoint (check the status line above for the actual endpoint):
 
 ### 1. List Available Actions
 ```bash
-GET /api/tool/search?keyword={optional_keyword}
+GET $VIBESURF_ENDPOINT/api/tool/search?keyword={optional_keyword}
 ```
 Returns all available VibeSurf actions.
 
 ### 2. Get Action Parameters
 ```bash
-GET /api/tool/{action_name}/params
+GET $VIBESURF_ENDPOINT/api/tool/{action_name}/params
 ```
 Returns JSON schema for the action's parameters.
 
 ### 3. Execute Action
 ```bash
-POST /api/tool/execute
+POST $VIBESURF_ENDPOINT/api/tool/execute
 Content-Type: application/json
 
 {
@@ -216,8 +216,9 @@ The status appears at the very top:
 
 **To manually re-check status (only if needed):**
 ```bash
-curl http://127.0.0.1:9335/health
+curl $VIBESURF_ENDPOINT/health
 # Returns HTTP 200 if running, connection error if not running
+# Default endpoint: http://127.0.0.1:9335 (if VIBESURF_ENDPOINT is not set)
 ```
 
 ## Getting Browser State

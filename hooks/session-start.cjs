@@ -12,6 +12,9 @@ const http = require('http');
 const scriptDir = __dirname;
 const pluginRoot = path.dirname(scriptDir);
 
+// Get VibeSurf endpoint from environment variable or use default
+const vibesurfEndpoint = process.env.VIBESURF_ENDPOINT || 'http://127.0.0.1:9335';
+
 // Check VibeSurf health
 let vibesurfStatus = 'unknown';
 let vibesurfMessage = '';
@@ -19,26 +22,26 @@ let vibesurfMessage = '';
 // Check if VibeSurf is running (with timeout)
 const checkVibeSurf = () => {
   return new Promise((resolve) => {
-    const req = http.get('http://127.0.0.1:9335/health', { timeout: 3000 }, (res) => {
+    const req = http.get(`${vibesurfEndpoint}/health`, { timeout: 3000 }, (res) => {
       if (res.statusCode === 200) {
         vibesurfStatus = 'running';
       } else {
         vibesurfStatus = 'not_running';
-        vibesurfMessage = '\n\n<important-reminder>VibeSurf is not running.\n\nTo use surf skills, start VibeSurf:\n```bash\nvibesurf\n```\n\nInstall VibeSurf: `uv tool install vibesurf`\n\nVibeSurf must be running on http://127.0.0.1:9335 for browser automation to work.</important-reminder>';
+        vibesurfMessage = `\n\n<important-reminder>VibeSurf is not running.\n\nTo use surf skills, start VibeSurf:\n\`\`\`bash\nvibesurf\n\`\`\`\n\nInstall VibeSurf: \`uv tool install vibesurf\`\n\nVibeSurf must be running on ${vibesurfEndpoint} for browser automation to work.\n\nYou can customize the endpoint by setting the VIBESURF_ENDPOINT environment variable.</important-reminder>`;
       }
       resolve();
     });
 
     req.on('error', () => {
       vibesurfStatus = 'not_running';
-      vibesurfMessage = '\n\n<important-reminder>VibeSurf is not running.\n\nTo use surf skills, start VibeSurf:\n```bash\nvibesurf\n```\n\nInstall VibeSurf: `uv tool install vibesurf`\n\nVibeSurf must be running on http://127.0.0.1:9335 for browser automation to work.</important-reminder>';
+      vibesurfMessage = `\n\n<important-reminder>VibeSurf is not running.\n\nTo use surf skills, start VibeSurf:\n\`\`\`bash\nvibesurf\n\`\`\`\n\nInstall VibeSurf: \`uv tool install vibesurf\`\n\nVibeSurf must be running on ${vibesurfEndpoint} for browser automation to work.\n\nYou can customize the endpoint by setting the VIBESURF_ENDPOINT environment variable.</important-reminder>`;
       resolve();
     });
 
     req.on('timeout', () => {
       req.destroy();
       vibesurfStatus = 'not_running';
-      vibesurfMessage = '\n\n<important-reminder>VibeSurf is not running.\n\nTo use surf skills, start VibeSurf:\n```bash\nvibesurf\n```\n\nInstall VibeSurf: `uv tool install vibesurf`\n\nVibeSurf must be running on http://127.0.0.1:9335 for browser automation to work.</important-reminder>';
+      vibesurfMessage = `\n\n<important-reminder>VibeSurf is not running.\n\nTo use surf skills, start VibeSurf:\n\`\`\`bash\nvibesurf\n\`\`\`\n\nInstall VibeSurf: \`uv tool install vibesurf\`\n\nVibeSurf must be running on ${vibesurfEndpoint} for browser automation to work.\n\nYou can customize the endpoint by setting the VIBESURF_ENDPOINT environment variable.</important-reminder>`;
       resolve();
     });
   });
@@ -74,7 +77,7 @@ const escapeForJson = (str) => {
   const output = {
     hookSpecificOutput: {
       hookEventName: 'SessionStart',
-      additionalContext: `<SURF_SKILLS>**VibeSurf Integration** - Status: ${vibesurfStatus}\n\nBelow is your surf skill for browser automation with VibeSurf:\n\n${surfEscaped}\n\n${messageEscaped}\n</SURF_SKILLS>`
+      additionalContext: `<SURF_SKILLS>**VibeSurf Integration** - Status: ${vibesurfStatus} (Endpoint: ${vibesurfEndpoint})\n\nBelow is your surf skill for browser automation with VibeSurf:\n\n${surfEscaped}\n\n${messageEscaped}\n</SURF_SKILLS>`
     }
   };
 
