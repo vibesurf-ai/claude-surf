@@ -24,7 +24,8 @@ Direct control of browser interactions. Use for simple, single actions.
 | Action | Description |
 |--------|-------------|
 | `get_browser_state` | Get current browser state including tabs, DOM content, and highlighted screenshot |
-| `browser.search` | Search on web |
+| `browser.get_element_info` | Get element details by index (xpath, position, attributes, visibility) |
+| `browser.search` | Google search |
 | `browser.navigate` | Navigate to URL |
 | `browser.go_back` | Go back |
 | `browser.wait` | Wait for condition |
@@ -65,6 +66,7 @@ Direct control of browser interactions. Use for simple, single actions.
 - `browser.hover` - Hover on element
 
 ### Data & Info
+- `browser.get_element_info` - Inspect element details (xpath, position, attributes)
 - `browser.extract` - LLM extracts structured data from page
 - `browser.get_html_content` - Get full HTML
 - `browser.find_text` - Find and scroll to text
@@ -105,10 +107,11 @@ Direct control of browser interactions. Use for simple, single actions.
 ## Best Practices
 
 1. Call `get_browser_state` first to see available elements
-2. Use element indices/IDs from browser state
-3. Tab IDs are last 4 characters of target_id
-4. Use `browser.extract` for LLM-based extraction from page markdown
-5. Use `browser.evaluate` for custom JavaScript operations
+2. Use `browser.get_element_info` to inspect element details (xpath, attributes, etc.)
+3. Use element indices/IDs from browser state
+4. Tab IDs are last 4 characters of target_id
+5. Use `browser.extract` for LLM-based extraction from page markdown
+6. Use `browser.evaluate` for custom JavaScript operations
 
 ## Manual Control Pattern (Fallback from browser-use)
 
