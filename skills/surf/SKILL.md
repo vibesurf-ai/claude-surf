@@ -9,23 +9,13 @@ description: Use when user asks to browse websites, automate browser tasks, fill
 
 Control real browsers through VibeSurf. This skill delegates to specialized sub-skills.
 
-> **🚨 CRITICAL: READ VIBESURF STATUS FIRST**
+> **🚨 VIBESURF STATUS (Auto-detected at session start)**
 >
-> **BEFORE doing anything with surf, LOOK at the status at the TOP of this skill content:**
-> - You will see: `<SURF_SKILLS>**VibeSurf Integration** - Status: running (Endpoint: ...)` or `Status: not_running`
-> - The endpoint is configured via the `VIBESURF_ENDPOINT` environment variable (defaults to `http://127.0.0.1:9335`)
-> - This status was **ALREADY DETECTED** by SessionStart hook - DO NOT IGNORE IT
+> Check the `<SURF_SKILLS>` status at the TOP of this context:
+> - ✅ **Status: running** → Proceed with surf skills
+> - ❌ **Status: not_running** → Ask user to run `vibesurf` (NEVER run it yourself)
 >
-> **What to do based on status:**
-> - ✅ **Status: running** → Use surf skills directly, proceed normally
-> - ❌ **Status: not_running** → Stop, inform user to run `vibesurf`, DO NOT run it yourself
->
-> **If you need to re-check status during the session:**
-> - Use: `curl $VIBESURF_ENDPOINT/health` (returns HTTP 200 if running)
-> - Default endpoint: `http://127.0.0.1:9335` (if VIBESURF_ENDPOINT is not set)
-> - Only do this if user explicitly asks or if you suspect status changed
->
-> **NEVER execute `vibesurf` or installation commands yourself**
+> **Check manually:** `curl $VIBESURF_ENDPOINT/health` (default: http://127.0.0.1:9335)
 
 ## How to Call VibeSurf API
 
@@ -90,6 +80,23 @@ Content-Type: application/json
 | Social Media Platform APIs | `website-api` | `get_website_api_params`, `call_website_api` |
 | Pre-built workflows | `workflows` | `search_workflows`, `execute_workflow` |
 | Gmail/GitHub/Slack | `integrations` | `get_all_toolkit_types`, `execute_extra_tool` |
+| LLM profile settings | `config-llm` | `config/llm-profiles/*` |
+| MCP server config | `config-mcp` | `config/mcp-profiles/*` |
+| VibeSurf key/workflows | `config-vibesurf` | `vibesurf/verify-key`, `vibesurf/import-workflow` |
+| Composio key/toolkits | `config-composio` | `composio/verify-key`, `composio/toolkits` |
+
+## Configuration Skills
+
+Use these skills to configure VibeSurf settings:
+
+| Config Task | Skill | When to Use |
+|-------------|-------|-------------|
+| Add/switch LLM | `config-llm` | Manage AI model profiles (OpenAI, Anthropic, etc.) |
+| Add MCP server | `config-mcp` | Configure MCP integrations for extended tools |
+| VibeSurf API key | `config-vibesurf` | Set up API key, import/export workflows |
+| Enable Gmail/GitHub/etc | `config-composio` | Configure Composio toolkits and OAuth |
+
+**Note:** After configuring Composio or MCP tools, use them through the `integrations` skill (see tool naming: `cpo.{toolkit}.{action}` or `mcp.{server}.{action}`).
 
 ## Decision Flow
 
@@ -147,6 +154,13 @@ Browser/Web Task
 │
 └─ Pre-built workflow? → workflows
 │  Examples: "Run video download workflow", "Execute auto-login workflow"
+│
+├─ Need to configure LLM/MCP/VibeSurf/Composio? → config-* skills
+│  Examples: "Add OpenAI API key", "Enable Gmail toolkit", "Import workflow"
+│  - LLM profiles → config-llm
+│  - MCP servers → config-mcp
+│  - VibeSurf key/workflows → config-vibesurf
+│  - Composio key/toolkits → config-composio
 ```
 
 ## Quick Reference
@@ -166,6 +180,10 @@ Browser/Web Task
 | Social Media Platform APIs | `website-api` | `call_website_api` |
 | Send email | `integrations` | `execute_extra_tool` |
 | Run workflow | `workflows` | `execute_workflow` |
+| Configure LLM profiles | `config-llm` | `config/llm-profiles/*` |
+| Configure MCP servers | `config-mcp` | `config/mcp-profiles/*` |
+| Configure VibeSurf key | `config-vibesurf` | `vibesurf/verify-key` |
+| Enable Composio toolkits | `config-composio` | `composio/toolkits` |
 
 ## Common Patterns
 
@@ -190,6 +208,11 @@ Browser/Web Task
 | "Debug console logs" | `browser` | `browser.start_console_logging` → actions → `browser.stop_console_logging` |
 | "Monitor network traffic" | `browser` | `browser.start_network_logging` → actions → `browser.stop_network_logging` |
 | "Test this website" | `browser` | Use console/network logging actions |
+| "Configure LLM" | `config-llm` | `config/llm-profiles` endpoints |
+| "Add MCP server" | `config-mcp` | `config/mcp-profiles` endpoints |
+| "Set VibeSurf API key" | `config-vibesurf` | `vibesurf/verify-key` |
+| "Import workflow" | `config-vibesurf` | `vibesurf/import-workflow` |
+| "Enable Gmail/GitHub" | `config-composio` | `composio/toolkits` + toggle endpoints |
 
 ## Error Handling
 
@@ -229,6 +252,7 @@ curl $VIBESURF_ENDPOINT/health
 > - All open tabs and their URLs
 > - Active tab information
 > - Page content/state
+> - Highlighted Screenshot
 >
 > **Action:** `get_browser_state`
 >

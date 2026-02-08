@@ -43,6 +43,23 @@ cpo.{service}.{action}     # Composio tools
 mcp.{server}.{action}      # MCP tools
 ```
 
+## Configuration Required
+
+Before using Composio or MCP tools, you must configure them first:
+
+| Integration | Configuration Skill | What to Configure |
+|-------------|---------------------|-------------------|
+| Composio (Gmail, GitHub, etc.) | `config-composio` | API key + enable toolkits |
+| MCP servers | `config-mcp` | Add MCP server profiles |
+
+**Workflow:**
+1. Configure using appropriate `config-*` skill
+2. Then use `integrations` skill to execute tools
+
+For example:
+1. First: `config-composio` → verify API key + enable `gmail` toolkit
+2. Then: `integrations` → execute `cpo.gmail.GMAIL_SEND_EMAIL`
+
 ## Common Integrations
 
 | Service | Common Actions |
