@@ -14,9 +14,6 @@ Manage VibeSurf API key and workflow configurations. Import, export, and execute
 - User needs to set up VibeSurf API key
 - User wants to import a workflow from JSON
 - User needs to export a workflow to JSON
-- User wants to search available workflow skills
-- User needs to execute a workflow skill
-- User wants to save workflow recordings
 
 ## API Endpoints
 
@@ -35,9 +32,6 @@ Base path: `$VIBESURF_ENDPOINT/vibesurf`
 |--------|--------|----------|-------------|
 | Import Workflow | POST | `/import-workflow` | Import workflow from JSON |
 | Export Workflow | GET | `/export-workflow/{flow_id}` | Export workflow to JSON file |
-| Search Skills | GET | `/search-workflow-skills?key_words=...` | Search available workflow skills |
-| Execute Skill | POST | `/execute-workflow-skill` | Execute a workflow skill |
-| Save Recording | POST | `/workflows/save-recording` | Save workflow recording |
 
 ## Request Examples
 
@@ -57,24 +51,6 @@ POST /vibesurf/import-workflow
 }
 ```
 
-### Execute Workflow Skill
-```json
-POST /vibesurf/execute-workflow-skill
-{
-  "workflow_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-  "tweak_params": "{\"ComponentID\": {\"input_name\": \"value\"}}"
-}
-```
-
-### Save Workflow Recording
-```json
-POST /vibesurf/workflows/save-recording
-{
-  "name": "My Recording",
-  "description": "Description of the workflow",
-  "workflows": [...]
-}
-```
 
 ## API Key Format
 
@@ -82,14 +58,6 @@ VibeSurf API keys must:
 - Start with `vs-`
 - Be 51 characters total length
 - Example: `vs-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
-
-## Workflow Execution
-
-Workflow skills are pre-configured workflows that can be executed with custom parameters:
-
-1. **Search workflows** → `GET /vibesurf/search-workflow-skills?key_words=...`
-2. **Check parameters** → Review `adjustable_parameters` in response
-3. **Execute** → `POST /vibesurf/execute-workflow-skill` with `tweak_params`
 
 ## Workflow Import/Export
 
@@ -107,5 +75,5 @@ Workflow skills are pre-configured workflows that can be executed with custom pa
 
 1. **Check API key status** → `GET /vibesurf/status`
 2. **Set up API key** (if needed) → `POST /vibesurf/verify-key`
-3. **Import or use existing workflows** → Import or search skills
-4. **Execute workflows** → Run with custom parameters
+3. **Import workflows** → `POST /vibesurf/import-workflow`
+4. **Export workflows** → `GET /vibesurf/export-workflow/{flow_id}`

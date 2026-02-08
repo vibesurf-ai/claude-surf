@@ -223,6 +223,8 @@ Browser/Web Task
 | Action not found | Call `GET /api/tool/search` to list all actions |
 | Wrong parameters | Call `GET /api/tool/{action_name}/params` to see schema |
 | browser-use fails or gets stuck | Fallback to `browser`: use `get_browser_state` → `browser.{action}` → repeat loop |
+| LLM/Crawl/Summary errors | **Cause**: No LLM profile configured<br>**Solution**: Use `config-llm` to add an LLM profile first |
+| Integration tools empty/not found | **Cause**: Composio/MCP not configured<br>**Solution**: Use `config-composio` or `config-mcp` to enable toolkits first |
 
 ## VibeSurf Status (Auto-Detected at Session Start)
 
