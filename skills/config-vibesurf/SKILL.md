@@ -17,27 +17,27 @@ Manage VibeSurf API key and workflow configurations. Import, export, and execute
 
 ## API Endpoints
 
-Base path: `$VIBESURF_ENDPOINT/vibesurf`
+Base path: `$VIBESURF_ENDPOINT/api/vibesurf`
 
 ### API Key Management
 
 | Action | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| Check Status | GET | `/status` | Get VibeSurf connection status |
-| Verify Key | POST | `/verify-key` | Verify and store API key |
+| Check Status | GET | `/api/vibesurf/status` | Get VibeSurf connection status |
+| Verify Key | POST | `/api/vibesurf/verify-key` | Verify and store API key |
 
 ### Workflow Management
 
 | Action | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| Import Workflow | POST | `/import-workflow` | Import workflow from JSON |
-| Export Workflow | GET | `/export-workflow/{flow_id}` | Export workflow to JSON file |
+| Import Workflow | POST | `/api/vibesurf/import-workflow` | Import workflow from JSON |
+| Export Workflow | GET | `/api/vibesurf/export-workflow/{flow_id}` | Export workflow to JSON file |
 
 ## Request Examples
 
 ### Verify API Key
 ```json
-POST /vibesurf/verify-key
+POST /api/vibesurf/verify-key
 {
   "api_key": "vs-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 }
@@ -45,7 +45,7 @@ POST /vibesurf/verify-key
 
 ### Import Workflow
 ```json
-POST /vibesurf/import-workflow
+POST /api/vibesurf/import-workflow
 {
   "workflow_json": "{\"name\": \"My Workflow\", \"description\": \"...\", \"data\": {...}}"
 }
@@ -73,7 +73,7 @@ VibeSurf API keys must:
 
 ## Workflow
 
-1. **Check API key status** → `GET /vibesurf/status`
-2. **Set up API key** (if needed) → `POST /vibesurf/verify-key`
-3. **Import workflows** → `POST /vibesurf/import-workflow`
-4. **Export workflows** → `GET /vibesurf/export-workflow/{flow_id}`
+1. **Check API key status** → `GET /api/vibesurf/status`
+2. **Set up API key** (if needed) → `POST /api/vibesurf/verify-key`
+3. **Import workflows** → `POST /api/vibesurf/import-workflow`
+4. **Export workflows** → `GET /api/vibesurf/export-workflow/{flow_id}`

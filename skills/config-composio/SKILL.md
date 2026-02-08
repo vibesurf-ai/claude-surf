@@ -20,30 +20,30 @@ Manage Composio API key and toolkit configurations. Enable/disable app integrati
 
 ## API Endpoints
 
-Base path: `$VIBESURF_ENDPOINT/composio`
+Base path: `$VIBESURF_ENDPOINT/api/composio`
 
 ### API Key Management
 
 | Action | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| Check Status | GET | `/status` | Get Composio connection status |
-| Verify Key | POST | `/verify-key` | Verify and store API key |
+| Check Status | GET | `/api/composio/status` | Get Composio connection status |
+| Verify Key | POST | `/api/composio/verify-key` | Verify and store API key |
 
 ### Toolkit Management
 
 | Action | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| List Toolkits | GET | `/toolkits` | Get all available toolkits |
-| Toggle Toolkit | POST | `/toolkit/{slug}/toggle` | Enable/disable toolkit |
-| Get Tools | GET | `/toolkit/{slug}/tools` | Get tools for a toolkit |
-| Update Tools | POST | `/toolkit/{slug}/tools` | Update selected tools |
-| Connection Status | GET | `/toolkit/{slug}/connection-status` | Check OAuth connection |
+| List Toolkits | GET | `/api/composio/toolkits` | Get all available toolkits |
+| Toggle Toolkit | POST | `/api/composio/toolkit/{slug}/toggle` | Enable/disable toolkit |
+| Get Tools | GET | `/api/composio/toolkit/{slug}/tools` | Get tools for a toolkit |
+| Update Tools | POST | `/api/composio/toolkit/{slug}/tools` | Update selected tools |
+| Connection Status | GET | `/api/composio/toolkit/{slug}/connection-status` | Check OAuth connection |
 
 ## Request Examples
 
 ### Verify API Key
 ```json
-POST /composio/verify-key
+POST /api/composio/verify-key
 {
   "api_key": "your-composio-api-key"
 }
@@ -51,7 +51,7 @@ POST /composio/verify-key
 
 ### Enable Toolkit
 ```json
-POST /composio/toolkit/gmail/toggle
+POST /api/composio/toolkit/gmail/toggle
 {
   "enabled": true,
   "force_reauth": false
@@ -60,7 +60,7 @@ POST /composio/toolkit/gmail/toggle
 
 ### Disable Toolkit
 ```json
-POST /composio/toolkit/gmail/toggle
+POST /api/composio/toolkit/gmail/toggle
 {
   "enabled": false
 }
@@ -68,7 +68,7 @@ POST /composio/toolkit/gmail/toggle
 
 ### Update Tool Selection
 ```json
-POST /composio/toolkit/gmail/tools
+POST /api/composio/toolkit/gmail/tools
 {
   "selected_tools": {
     "GMAIL_SEND_EMAIL": true,
@@ -95,10 +95,10 @@ POST /composio/toolkit/gmail/tools
 
 When enabling a toolkit that requires OAuth:
 
-1. **Enable toolkit** → `POST /toolkit/{slug}/toggle` with `enabled: true`
+1. **Enable toolkit** → `POST /api/composio/toolkit/{slug}/toggle` with `enabled: true`
 2. **Check response** → If `requires_oauth: true`, an `oauth_url` is provided
 3. **User authenticates** → Open `oauth_url` in browser to complete OAuth
-4. **Verify connection** → `GET /toolkit/{slug}/connection-status`
+4. **Verify connection** → `GET /api/composio/toolkit/{slug}/connection-status`
 
 ## Using Composio Tools
 
@@ -127,9 +127,9 @@ Examples:
 
 ## Workflow
 
-1. **Check API key status** → `GET /composio/status`
-2. **Set up API key** (if needed) → `POST /composio/verify-key`
-3. **List available toolkits** → `GET /composio/toolkits`
-4. **Enable desired toolkit** → `POST /composio/toolkit/{slug}/toggle`
+1. **Check API key status** → `GET /api/composio/status`
+2. **Set up API key** (if needed) → `POST /api/composio/verify-key`
+3. **List available toolkits** → `GET /api/composio/toolkits`
+4. **Enable desired toolkit** → `POST /api/composio/toolkit/{slug}/toggle`
 5. **Complete OAuth** (if required) → Use provided `oauth_url`
 6. **Use tools** → Execute via `integrations` skill

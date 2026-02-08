@@ -19,22 +19,22 @@ Manage MCP (Model Context Protocol) profiles for VibeSurf. MCP allows integratin
 
 ## API Endpoints
 
-Base path: `$VIBESURF_ENDPOINT/config`
+Base path: `$VIBESURF_ENDPOINT/api/config`
 
 ### MCP Profile Management
 
 | Action | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| List Profiles | GET | `/mcp-profiles?active_only=true` | List all MCP profiles |
-| Get Profile | GET | `/mcp-profiles/{mcp_id}` | Get specific profile details |
-| Create Profile | POST | `/mcp-profiles` | Create new MCP profile |
-| Update Profile | PUT | `/mcp-profiles/{mcp_id}` | Update existing profile |
+| List Profiles | GET | `/api/config/mcp-profiles?active_only=true` | List all MCP profiles |
+| Get Profile | GET | `/api/config/mcp-profiles/{mcp_id}` | Get specific profile details |
+| Create Profile | POST | `/api/config/mcp-profiles` | Create new MCP profile |
+| Update Profile | PUT | `/api/config/mcp-profiles/{mcp_id}` | Update existing profile |
 
 ## Request Examples
 
 ### Create MCP Profile
 ```json
-POST /config/mcp-profiles
+POST /api/config/mcp-profiles
 {
   "display_name": "My MCP Server",
   "mcp_server_name": "server-name",
@@ -51,7 +51,7 @@ POST /config/mcp-profiles
 
 ### Update MCP Profile
 ```json
-PUT /config/mcp-profiles/{mcp_id}
+PUT /api/config/mcp-profiles/{mcp_id}
 {
   "display_name": "Updated Name",
   "mcp_server_params": {
@@ -108,5 +108,5 @@ Once MCP profiles are configured, their tools become available through the `inte
 ## Workflow
 
 1. **Identify MCP server** → Choose from available MCP servers
-2. **Create profile** → `POST /mcp-profiles` with server params
+2. **Create profile** → `POST /api/config/mcp-profiles` with server params
 3. **Verify tools** → Use `integrations` skill to list and use MCP tools

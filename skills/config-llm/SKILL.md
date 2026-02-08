@@ -19,29 +19,29 @@ Manage LLM (Large Language Model) profiles for VibeSurf. Configure different AI 
 
 ## API Endpoints
 
-Base path: `$VIBESURF_ENDPOINT/config`
+Base path: `$VIBESURF_ENDPOINT/api/config`
 
 ### Profile Management
 
 | Action | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| List Profiles | GET | `/llm-profiles?active_only=true` | List all LLM profiles |
-| Get Profile | GET | `/llm-profiles/{profile_name}` | Get specific profile details |
-| Create Profile | POST | `/llm-profiles` | Create new LLM profile |
-| Update Profile | PUT | `/llm-profiles/{profile_name}` | Update existing profile |
-| Set Default | POST | `/llm-profiles/{profile_name}/set-default` | Set profile as default |
-| Get Default | GET | `/llm-profiles/default/current` | Get current default profile |
+| List Profiles | GET | `/api/config/llm-profiles?active_only=true` | List all LLM profiles |
+| Get Profile | GET | `/api/config/llm-profiles/{profile_name}` | Get specific profile details |
+| Create Profile | POST | `/api/config/llm-profiles` | Create new LLM profile |
+| Update Profile | PUT | `/api/config/llm-profiles/{profile_name}` | Update existing profile |
+| Set Default | POST | `/api/config/llm-profiles/{profile_name}/set-default` | Set profile as default |
+| Get Default | GET | `/api/config/llm-profiles/default/current` | Get current default profile |
 
 ### Provider Management
 
 | Action | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| List Providers | GET | `/llm/providers` | Get available LLM providers |
-| Get Models | GET | `/llm/providers/{provider_name}/models` | Get models for a provider |
+| List Providers | GET | `/api/config/llm/providers` | Get available LLM providers |
+| Get Models | GET | `/api/config/llm/providers/{provider_name}/models` | Get models for a provider |
 
 ## Provider Notes
 
-> **Tip:** Use `GET /llm/providers` to see all available providers and their supported models.
+> **Tip:** Use `GET /api/config/llm/providers` to see all available providers and their supported models.
 >
 > **For OpenAI-compatible APIs:** If using a third-party provider that offers OpenAI-compatible endpoints (like local models, DeepSeek, or other proxies), use the `openai_compatible` provider and set the custom `base_url`.
 
@@ -49,7 +49,7 @@ Base path: `$VIBESURF_ENDPOINT/config`
 
 ### Create Profile
 ```json
-POST /config/llm-profiles
+POST /api/config/llm-profiles
 {
   "profile_name": "my-openai",
   "provider": "openai",
@@ -63,7 +63,7 @@ POST /config/llm-profiles
 
 ### Update Profile
 ```json
-PUT /config/llm-profiles/my-openai
+PUT /api/config/llm-profiles/my-openai
 {
   "temperature": 0.5,
   "max_tokens": 2048
@@ -89,7 +89,7 @@ PUT /config/llm-profiles/my-openai
 
 ## Workflow
 
-1. **Get available providers** → `GET /llm/providers`
-2. **Choose provider and model** → `GET /llm/providers/{provider}/models`
-3. **Create profile** → `POST /llm-profiles`
-4. **Set as default** (optional) → `POST /llm-profiles/{name}/set-default`
+1. **Get available providers** → `GET /api/config/llm/providers`
+2. **Choose provider and model** → `GET /api/config/llm/providers/{provider}/models`
+3. **Create profile** → `POST /api/config/llm-profiles`
+4. **Set as default** (optional) → `POST /api/config/llm-profiles/{name}/set-default`
