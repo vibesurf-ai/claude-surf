@@ -39,14 +39,11 @@ Base path: `$VIBESURF_ENDPOINT/config`
 | List Providers | GET | `/llm/providers` | Get available LLM providers |
 | Get Models | GET | `/llm/providers/{provider_name}/models` | Get models for a provider |
 
-## Common Providers
+## Provider Notes
 
-- `openai` - GPT-4, GPT-3.5, etc.
-- `anthropic` - Claude models
-- `google` - Gemini models
-- `deepseek` - DeepSeek models
-- `openrouter` - Multi-provider access
-- `local` - Local/self-hosted models
+> **Tip:** Use `GET /llm/providers` to see all available providers and their supported models.
+>
+> **For OpenAI-compatible APIs:** If using a third-party provider that offers OpenAI-compatible endpoints (like local models, DeepSeek, or other proxies), use the `openai_compatible` provider and set the custom `base_url`.
 
 ## Request Examples
 
