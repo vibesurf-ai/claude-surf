@@ -84,6 +84,7 @@ Content-Type: application/json
 | MCP server config | `config-mcp` | `config/mcp-profiles/*` |
 | VibeSurf key/workflows | `config-vibesurf` | `vibesurf/verify-key`, `vibesurf/import-workflow` |
 | Composio key/toolkits | `config-composio` | `composio/verify-key`, `composio/toolkits` |
+| Schedule workflows | `config-schedule` | `schedule/*` |
 
 ## Configuration Skills
 
@@ -95,6 +96,7 @@ Use these skills to configure VibeSurf settings:
 | Add MCP server | `config-mcp` | Configure MCP integrations for extended tools |
 | VibeSurf API key | `config-vibesurf` | Set up API key, import/export workflows |
 | Enable Gmail/GitHub/etc | `config-composio` | Configure Composio toolkits and OAuth |
+| Schedule workflows | `config-schedule` | Set up cron-based workflow automation |
 
 **Note:** After configuring Composio or MCP tools, use them through the `integrations` skill (see tool naming: `cpo.{toolkit}.{action}` or `mcp.{server}.{action}`).
 
@@ -161,6 +163,7 @@ Browser/Web Task
 │  - MCP servers → config-mcp
 │  - VibeSurf key/workflows → config-vibesurf
 │  - Composio key/toolkits → config-composio
+│  - Schedule workflows → config-schedule
 ```
 
 ## Quick Reference
@@ -184,6 +187,7 @@ Browser/Web Task
 | Configure MCP servers | `config-mcp` | `config/mcp-profiles/*` |
 | Configure VibeSurf key | `config-vibesurf` | `vibesurf/verify-key` |
 | Enable Composio toolkits | `config-composio` | `composio/toolkits` |
+| Schedule workflows | `config-schedule` | `schedule/*` |
 
 ## Common Patterns
 
@@ -213,6 +217,7 @@ Browser/Web Task
 | "Set VibeSurf API key" | `config-vibesurf` | `vibesurf/verify-key` |
 | "Import workflow" | `config-vibesurf` | `vibesurf/import-workflow` |
 | "Enable Gmail/GitHub" | `config-composio` | `composio/toolkits` + toggle endpoints |
+| "Schedule workflow" | `config-schedule` | `schedule/*` endpoints |
 
 ## Error Handling
 
