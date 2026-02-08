@@ -85,6 +85,7 @@ Content-Type: application/json
 | VibeSurf key/workflows | `config-vibesurf` | `vibesurf/verify-key`, `vibesurf/import-workflow` |
 | Composio key/toolkits | `config-composio` | `composio/verify-key`, `composio/toolkits` |
 | Schedule workflows | `config-schedule` | `schedule/*` |
+| File upload/download | `file` | `/api/files/*` |
 
 ## Configuration Skills
 
@@ -188,6 +189,7 @@ Browser/Web Task
 | Configure VibeSurf key | `config-vibesurf` | `vibesurf/verify-key` |
 | Enable Composio toolkits | `config-composio` | `composio/toolkits` |
 | Schedule workflows | `config-schedule` | `schedule/*` |
+| Upload/Download files | `file` | `/api/files/*` |
 
 ## Common Patterns
 
@@ -218,6 +220,7 @@ Browser/Web Task
 | "Import workflow" | `config-vibesurf` | `vibesurf/import-workflow` |
 | "Enable Gmail/GitHub" | `config-composio` | `composio/toolkits` + toggle endpoints |
 | "Schedule workflow" | `config-schedule` | `schedule/*` endpoints |
+| "Upload file" / "Download file" | `file` | `/api/files/*` endpoints |
 
 ## Error Handling
 
