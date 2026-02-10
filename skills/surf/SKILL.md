@@ -86,6 +86,7 @@ Content-Type: application/json
 | Composio key/toolkits | `config-composio` | `composio/verify-key`, `composio/toolkits` |
 | Schedule workflows | `config-schedule` | `schedule/*` |
 | File upload/download | `file` | `/api/files/*` |
+| Voice/ASR configuration | `config-voice` | `/api/voices/*` |
 
 ## Configuration Skills
 
@@ -98,6 +99,7 @@ Use these skills to configure VibeSurf settings:
 | VibeSurf API key | `config-vibesurf` | Set up API key, import/export workflows |
 | Enable Gmail/GitHub/etc | `config-composio` | Configure Composio toolkits and OAuth |
 | Schedule workflows | `config-schedule` | Set up cron-based workflow automation |
+| Voice/ASR profiles | `config-voice` | Configure speech recognition profiles |
 
 **Note:** After configuring Composio or MCP tools, use them through the `integrations` skill (see tool naming: `cpo.{toolkit}.{action}` or `mcp.{server}.{action}`).
 
@@ -158,13 +160,14 @@ Browser/Web Task
 └─ Pre-built workflow? → workflows
 │  Examples: "Run video download workflow", "Execute auto-login workflow"
 │
-├─ Need to configure LLM/MCP/VibeSurf/Composio? → config-* skills
+├─ Need to configure LLM/MCP/VibeSurf/Composio/Voice? → config-* skills
 │  Examples: "Add OpenAI API key", "Enable Gmail toolkit", "Import workflow"
 │  - LLM profiles → config-llm
 │  - MCP servers → config-mcp
 │  - VibeSurf key/workflows → config-vibesurf
 │  - Composio key/toolkits → config-composio
 │  - Schedule workflows → config-schedule
+│  - Voice/ASR profiles → config-voice
 ```
 
 ## Quick Reference
@@ -190,6 +193,7 @@ Browser/Web Task
 | Enable Composio toolkits | `config-composio` | `composio/toolkits` |
 | Schedule workflows | `config-schedule` | `schedule/*` |
 | Upload/Download files | `file` | `/api/files/*` |
+| Configure Voice/ASR | `config-voice` | `/api/voices/*` |
 
 ## Common Patterns
 
@@ -221,6 +225,8 @@ Browser/Web Task
 | "Enable Gmail/GitHub" | `config-composio` | `composio/toolkits` + toggle endpoints |
 | "Schedule workflow" | `config-schedule` | `schedule/*` endpoints |
 | "Upload file" / "Download file" | `file` | `/api/files/*` endpoints |
+| "Configure voice profile" / "ASR" | `config-voice` | `/api/voices/*` |
+| "Speech to text" / "Transcribe audio" | `config-voice` | `/api/voices/asr` |
 
 ## Error Handling
 
@@ -288,3 +294,17 @@ browser-use fails or gets stuck
 ```
 
 **Key principle:** Choose based on task complexity and control needs, not step count. Browser-use is not exclusive to multi-step tasks; browser can handle complex workflows too.
+
+---
+
+## API Parameter Troubleshooting
+
+If you encounter API parameter errors when calling VibeSurf endpoints, you can visit the interactive API documentation at:
+
+```
+http://127.0.0.1:9335/docs
+```
+
+For example: `http://127.0.0.1:9335/docs#/config/create_mcp_profile_api_config_mcp_profiles_post`
+
+> **Note:** This is a **fallback** approach. In most cases, reading the corresponding skill documentation (e.g., `config-mcp` skill) should provide sufficient guidance on how to use the API correctly. Only refer to the `/docs` endpoint when the skill documentation doesn't resolve your issue or you need to inspect specific request/response schemas.
